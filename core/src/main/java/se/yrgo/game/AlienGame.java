@@ -15,6 +15,7 @@ public class AlienGame extends Game {
 
 	private int points;
 
+
 	@Override
     public void create () {
 		gameScreen = new GameScreen(this);

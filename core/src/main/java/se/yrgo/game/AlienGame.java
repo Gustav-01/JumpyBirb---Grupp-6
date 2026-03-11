@@ -12,6 +12,7 @@ public class AlienGame extends Game {
 	private GameScreen gameScreen;
 	private GameOverScreen gameOverScreen;
 
+
 	private int points;
 
 	@Override

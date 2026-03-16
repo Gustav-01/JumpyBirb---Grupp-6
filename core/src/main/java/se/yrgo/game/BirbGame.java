@@ -2,10 +2,7 @@ package se.yrgo.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -23,6 +20,8 @@ public class BirbGame extends Game {
     private Viewport viewport;
     private Camera camera;
 
+    private Sprite smallKiwi;
+
     /**
      * Runs one time at the start of the application.
      */
@@ -32,12 +31,19 @@ public class BirbGame extends Game {
         batch = new SpriteBatch();
 
         assetManager.load("birb_the_kiwi.png", Texture.class);
-        assetManager.finishLoading();
-        kiwi = new Sprite(assetManager.get("birb_the_kiwi.png", Texture.class));
-        kiwi.setSize(1.5f, 1f);
 
-        camera = new PerspectiveCamera();
-        viewport = new FitViewport(800, 400, camera);
+        assetManager.load("Test kiwi no wings-1.png", Texture.class);
+
+        assetManager.finishLoading();
+
+        smallKiwi = new Sprite(assetManager.get("Test kiwi no wings-1.png", Texture.class));
+        smallKiwi.setSize(1, 1);
+
+        kiwi = new Sprite(assetManager.get("birb_the_kiwi.png", Texture.class));
+        kiwi.setSize(7.5f, 5);
+
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(25, 15, camera);
     }
 
     /**
@@ -45,7 +51,7 @@ public class BirbGame extends Game {
      */
     @Override
     public void render() {
-
+        super.render();
 
         draw();
     }
@@ -55,15 +61,21 @@ public class BirbGame extends Game {
         ScreenUtils.clear(Color.BLACK);
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
-
+//
+//        kiwi.setPosition(5, 5);
+//        smallKiwi.setPosition(1, 1);
         batch.begin();
-        batch.draw(kiwi, 0, 0, 1.5f, 1);
+//        batch.draw(kiwi, 50, 50, 1.5f, 1);
+//        kiwi.draw(batch);
+//        smallKiwi.draw(batch);
+        batch.draw(kiwi, 10, 5);
+        batch.draw(smallKiwi, 1, 1, 1, 1);
+
         batch.end();
     }
 
-//    Todo: Make sure resizing is done correctly, possibly using this method
-//    @Override
-//    public void resize(int width, int height) {
-//        viewport.update(width, height, true);
-//    }
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
+    }
 }

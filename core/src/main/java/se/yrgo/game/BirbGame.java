@@ -24,6 +24,8 @@ public class BirbGame extends Game {
     private Viewport viewport;
     private Camera camera;
 
+    private GameScreen gameScreen;
+
     private Sprite smallKiwi;
 
     /**
@@ -31,6 +33,7 @@ public class BirbGame extends Game {
      */
     @Override
     public void create() {
+        gameScreen = new GameScreen(this);
         assetManager = new AssetManager();
         batch = new SpriteBatch();
 

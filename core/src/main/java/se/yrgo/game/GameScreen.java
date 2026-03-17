@@ -11,6 +11,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+/**
+ * The main screen of the game, where the game mechanics take place.
+ */
 public class GameScreen implements Screen {
     private static final int WORLD_WIDTH = 800;
     private static final int WORLD_HEIGHT = 600;
@@ -31,7 +34,7 @@ public class GameScreen implements Screen {
 
         kiwi = new Sprite(new Texture("Kiwi_wing_up.png"));
         kiwi.setSize(153.6f, 102.4f);
-        kiwi.setPosition(WORLD_WIDTH / 5, WORLD_HEIGHT / 2);
+        kiwi.setPosition(WORLD_WIDTH / 5f, WORLD_HEIGHT / 2f);
 
         // Background
         background = new Sprite(new Texture("background.png"));
@@ -45,11 +48,20 @@ public class GameScreen implements Screen {
         camera.update();
     }
 
+    /**
+     * Called once per frame. Updates the game state every frame.
+     *
+     * @param delta The time in seconds since the last render. By multiplying delta time with movement speed,
+     *              we can set a consistant speed (in seconds) regardless of the user's framerate.
+     */
     @Override
     public void render(float delta) {
         draw();
     }
 
+    /**
+     * Helper method for drawing all textures in a frame.
+     */
     public void draw() {
         ScreenUtils.clear(Color.GRAY);
         viewport.apply();
@@ -62,6 +74,12 @@ public class GameScreen implements Screen {
         batch.end();
     }
 
+    /**
+     * Called when the application window is resized
+     *
+     * @param width  new width
+     * @param height new height
+     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);

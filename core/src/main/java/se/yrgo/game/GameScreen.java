@@ -1,9 +1,10 @@
 package se.yrgo.game;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -14,19 +15,14 @@ public class GameScreen implements Screen {
     private static final int WORLD_WIDTH = 800;
     private static final int WORLD_HEIGHT = 600;
 
-
     private final BirbGame game;
     private SpriteBatch batch;
     private Sprite kiwi;
-//    private Sprite smallKiwi;
 
     private Viewport viewport;
     private Camera camera;
 
     private Sprite background;
-    private float bgX1 = 0;
-    private float bgX2;
-    private float bgSpeed = 100; // pixlar per sekund
 
     public GameScreen(BirbGame game) {
         this.game = game;
@@ -47,41 +43,11 @@ public class GameScreen implements Screen {
 
         camera.position.set(WORLD_WIDTH, WORLD_HEIGHT, 0);
         camera.update();
-//
-//        background = new Texture("background.png");
-//
-//        // Placera två kopior av bakgrunden bredvid varandra
-//        bgX2 = background.getWidth();
     }
 
     @Override
     public void render(float delta) {
         draw();
-
-        // Uppdatera bakgrundens position (åt höger)
-//        bgX1 += bgSpeed * delta;
-//        bgX2 += bgSpeed * delta;
-//
-//        // Looping åt höger
-//        if (bgX1 >= background.getWidth()) {
-//            bgX1 = bgX2 - background.getWidth();
-//        }
-//        if (bgX2 >= background.getWidth()) {
-//            bgX2 = bgX1 - background.getWidth();
-//        }
-//
-//        // Rensa skärmen
-//        Gdx.gl.glClearColor(0, 0, 0, 1);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Rita bakgrunden
-//        batch.begin();
-//        batch.draw(background, bgX1, 0);
-//        batch.draw(background, bgX2, 0);
-
-
-//        batch.end();
-
     }
 
     public void draw() {
@@ -119,7 +85,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-//        background.dispose();
     }
 }
 

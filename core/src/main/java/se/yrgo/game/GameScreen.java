@@ -23,7 +23,7 @@ public class GameScreen implements Screen {
     private Viewport viewport;
     private Camera camera;
 
-    private Texture background;
+    private Sprite background;
     private float bgX1 = 0;
     private float bgX2;
     private float bgSpeed = 100; // pixlar per sekund
@@ -36,6 +36,11 @@ public class GameScreen implements Screen {
         kiwi = new Sprite(new Texture("Kiwi_wing_up.png"));
         kiwi.setSize(153.6f, 102.4f);
         kiwi.setPosition(WORLD_WIDTH / 5, WORLD_HEIGHT / 2);
+
+        // Background
+        background = new Sprite(new Texture("background.png"));
+        background.setSize(WORLD_WIDTH, WORLD_HEIGHT);
+        background.setPosition(0, 0);
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -85,7 +90,7 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(viewport.getCamera().combined);
 
         batch.begin();
-
+        background.draw(batch);
         kiwi.draw(batch);
 
         batch.end();
@@ -114,7 +119,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        background.dispose();
+//        background.dispose();
     }
 }
 

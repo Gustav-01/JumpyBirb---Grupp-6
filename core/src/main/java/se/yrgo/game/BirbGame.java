@@ -10,7 +10,6 @@ public class BirbGame extends Game {
 
     private GameScreen gameScreen;
 
-
     /**
      * Runs one time at the start of the application.
      */
@@ -18,15 +17,6 @@ public class BirbGame extends Game {
     public void create() {
         gameScreen = new GameScreen(this);
         setScreen(gameScreen);
-    }
-
-    /**
-     * Is called when rendering should be performed.
-     */
-    @Override
-    public void render() {
-        super.render();
-
     }
 
 }

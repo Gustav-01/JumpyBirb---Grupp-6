@@ -1,16 +1,12 @@
-# Space invaders demo project
+# Jumpy Bird 
 
-This is a very basic space invaders demo for use in one of my classes to show some basic GDX code.
+This is a 2D infinite runner game, where you fly with Birb the kiwi to avoid the obstacles in your path. 
 
-This is not a good example of how to make a game, it is just there to give some hints as to what one could do to create a very basic game.
-
-## Discovering
-
-The desktop game is stared from `lwjgl3\src\main\java\se\yrgo\game\lwjgl3\Lwjgl3Launcher.java`.
-
-The actual game can be found in `core\src\main\java\se\yrgo\game\`.
+All you have to do is press the space key to flap at the right timing!
 
 ## Building and running
+
+Open a UNIX terminal in the root directory of the project.
 
 To build the project run `./gradlew build`.
 
@@ -20,4 +16,5 @@ This should invoke the gradle wrapper and install Gradle on your system. To manu
 
 ## More info about GDX
 
+This game was made using libGDX.
 For more info about libGDX visit [libgdx.com](https://libgdx.com/).

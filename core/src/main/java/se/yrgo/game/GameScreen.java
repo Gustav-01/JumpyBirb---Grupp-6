@@ -1,5 +1,6 @@
 package se.yrgo.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -27,6 +28,11 @@ public class GameScreen implements Screen {
 
     private Sprite background;
 
+    private Obstacle obstacle1;
+    private Obstacle obstacle2;
+
+    private int screenWidth;
+
     public GameScreen(BirbGame game) {
         this.game = game;
 
@@ -40,6 +46,11 @@ public class GameScreen implements Screen {
         background = new Sprite(new Texture("background.png"));
         background.setSize(WORLD_WIDTH, WORLD_HEIGHT);
         background.setPosition(0, 0);
+
+        screenWidth = Gdx.graphics.getWidth();
+
+        obstacle1 = new Obstacle("ForkSprite.png", screenWidth + 200, 100, 150);
+        obstacle2 = new Obstacle("KnifeSprite.png", screenWidth + 600, 100, 150);
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -56,13 +67,13 @@ public class GameScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        draw();
+        draw(delta);
     }
 
     /**
      * Helper method for drawing all textures in a frame.
      */
-    public void draw() {
+    public void draw(float delta) {
         ScreenUtils.clear(Color.GRAY);
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
@@ -70,6 +81,22 @@ public class GameScreen implements Screen {
         batch.begin();
         background.draw(batch);
         kiwi.draw(batch);
+
+        // Uppdatera hinder
+        obstacle1.update(delta);
+        obstacle2.update(delta);
+
+        // Looping
+        if (obstacle1.x + obstacle1.width <= 0) {
+            obstacle1.x = screenWidth + 200;
+        }
+        if (obstacle2.x + obstacle2.width <= 0) {
+            obstacle2.x = screenWidth + 600;
+        }
+
+        // Rita hinder
+        obstacle1.render(batch);
+        obstacle2.render(batch);
 
         batch.end();
     }
@@ -103,6 +130,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        obstacle1.texture.dispose();
+        obstacle2.texture.dispose();
     }
 }
 

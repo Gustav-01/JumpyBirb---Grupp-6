@@ -32,6 +32,7 @@ public class GameScreen implements Screen {
     private Obstacle obstacle2;
 
     private int screenWidth;
+    private boolean gameOver = false;
 
     public GameScreen(BirbGame game) {
         this.game = game;
@@ -67,8 +68,15 @@ public class GameScreen implements Screen {
      */
     @Override
     public void render(float delta) {
+        if (gameOver){
+            game.gameOver();
+            return;
+        }
+
         draw(delta);
+        checkForGameOver();
     }
+
 
     /**
      * Helper method for drawing all textures in a frame.
@@ -99,6 +107,13 @@ public class GameScreen implements Screen {
         obstacle2.render(batch);
 
         batch.end();
+    }
+
+    private void checkForGameOver() {
+        //Foreach Obstacle in obstacleList
+        //if (kiwi.overlaps(obstacle)){
+        //gameOver = true;
+        //}
     }
 
     /**

@@ -19,6 +19,9 @@ public class GameScreen implements Screen {
     private static final int WORLD_WIDTH = 800;
     private static final int WORLD_HEIGHT = 600;
 
+    private static final float KIWI_WIDTH = 153.6f;
+    private static final float KIWI_HEIGHT = 102.4f;
+
     private final BirbGame game;
     private SpriteBatch batch;
     private Sprite kiwi;

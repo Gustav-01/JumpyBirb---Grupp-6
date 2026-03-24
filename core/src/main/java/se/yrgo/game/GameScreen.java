@@ -1,6 +1,7 @@
 package se.yrgo.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -36,6 +37,11 @@ public class GameScreen implements Screen {
 
     private int screenWidth;
     private boolean gameOver = false;
+
+    // Variables for jump logic
+    private float velocityY = 0;
+    private final float gravity = -900f;
+    private final float jumpForce = 350f;
 
     public GameScreen(BirbGame game) {
         this.game = game;
@@ -77,7 +83,22 @@ public class GameScreen implements Screen {
         }
 
         draw(delta);
+
         checkForGameOver();
+
+        // Jump logic
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            velocityY = jumpForce;
+        }
+        velocityY += gravity * delta;
+        float newPosition = kiwi.getY() + velocityY * delta;
+        kiwi.setY(newPosition);
+
+        if (kiwi.getY() < 0) {
+            kiwi.setY(0);
+            velocityY = 0;
+        }
+
     }
 
 

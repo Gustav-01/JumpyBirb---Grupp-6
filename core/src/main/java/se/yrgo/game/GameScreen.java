@@ -67,6 +67,18 @@ public class GameScreen implements Screen {
         ObstaclePair pair1 = new ObstaclePair(obstacle1, obstacle2);
         obstaclePairs.add(pair1);
 
+        ObstaclePair pair2 = new ObstaclePair(
+            new Obstacle("ForkSprite.png", screenWidth + 500, 0, 150),
+            new Obstacle("KnifeSprite.png", screenWidth + 500, (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150));
+
+        obstaclePairs.add(pair2);
+
+        ObstaclePair pair3 = new ObstaclePair(
+            new Obstacle("ForkSprite.png", screenWidth + 800, -300, 150),
+            new Obstacle("KnifeSprite.png", screenWidth + 800, (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150));
+
+        obstaclePairs.add(pair3);
+
         camera = new OrthographicCamera();
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 
@@ -112,15 +124,18 @@ public class GameScreen implements Screen {
         kiwi.draw(batch);
 
         // Uppdatera hinder
-        obstaclePairs.get(0).update(delta);
+        for (ObstaclePair obstaclePair : obstaclePairs) {
+            obstaclePair.update(delta);
 
-        // Looping
-        if (obstaclePairs.get(0).getX() + obstaclePairs.get(0).getWidth() <= 0) {
-            obstaclePairs.get(0).setX(screenWidth + 200);
+            // Looping
+            if (obstaclePair.getX() + obstaclePair.getWidth() <= 0) {
+                obstaclePair.setX(screenWidth + 200);
+            }
+
+            // Rita hinder
+            obstaclePair.render(batch);
         }
 
-        // Rita hinder
-        obstaclePairs.get(0).render(batch);
 
         batch.end();
     }

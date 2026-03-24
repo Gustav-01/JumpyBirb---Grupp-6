@@ -13,12 +13,16 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The main screen of the game, where the game mechanics take place.
  */
 public class GameScreen implements Screen {
     private static final int WORLD_WIDTH = 800;
     private static final int WORLD_HEIGHT = 600;
+    private static final int OBSTACLE_GAP = 150;
 
     private final BirbGame game;
     private SpriteBatch batch;
@@ -31,6 +35,8 @@ public class GameScreen implements Screen {
 
     private Obstacle obstacle1;
     private Obstacle obstacle2;
+
+    private List<ObstaclePair> obstaclePairs = new ArrayList<>();
 
     private int screenWidth;
 
@@ -55,8 +61,11 @@ public class GameScreen implements Screen {
 
         screenWidth = Gdx.graphics.getWidth();
 
-        obstacle1 = new Obstacle("ForkSprite.png", screenWidth + 200, 100, 150);
-        obstacle2 = new Obstacle("KnifeSprite.png", screenWidth + 600, 100, 150);
+        obstacle1 = new Obstacle("ForkSprite.png", screenWidth + 200, -100, 150);
+        obstacle2 = new Obstacle("KnifeSprite.png", screenWidth + 200, (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150);
+
+        ObstaclePair pair1 = new ObstaclePair(obstacle1, obstacle2);
+        obstaclePairs.add(pair1);
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -103,20 +112,15 @@ public class GameScreen implements Screen {
         kiwi.draw(batch);
 
         // Uppdatera hinder
-        obstacle1.update(delta);
-        obstacle2.update(delta);
+        obstaclePairs.get(0).update(delta);
 
         // Looping
-        if (obstacle1.x + obstacle1.width <= 0) {
-            obstacle1.x = screenWidth + 200;
-        }
-        if (obstacle2.x + obstacle2.width <= 0) {
-            obstacle2.x = screenWidth + 600;
+        if (obstaclePairs.get(0).getX() + obstaclePairs.get(0).getWidth() <= 0) {
+            obstaclePairs.get(0).setX(screenWidth + 200);
         }
 
         // Rita hinder
-        obstacle1.render(batch);
-        obstacle2.render(batch);
+        obstaclePairs.get(0).render(batch);
 
         batch.end();
     }

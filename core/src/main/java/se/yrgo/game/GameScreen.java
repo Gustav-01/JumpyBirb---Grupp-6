@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The main screen of the game, where the game mechanics take place.
@@ -24,7 +25,9 @@ public class GameScreen implements Screen {
     private static final int WORLD_HEIGHT = 600;
     private static final int OBSTACLE_GAP = 150;
     private static final int OBSTACLE_SPEED = 150;
-    private static final int OBSTACLE_INTERVAL = Gdx.graphics.getWidth() / 5;
+    private static final int OBSTACLE_INTERVAL = Gdx.graphics.getWidth() / 3;
+    private static final int OBSTACLE_WIDTH = 52;
+    private static final int OBSTACLE_HEIGHT = 360;
 
     private final BirbGame game;
     private SpriteBatch batch;
@@ -172,18 +175,22 @@ public class GameScreen implements Screen {
 //            (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150);
 
 //        float x = (WORLD_WIDTH / (float)obstacleTotalCount + WORLD_WIDTH + (index * (WORLD_WIDTH / (float)obstacleTotalCount)));
-        float x = (WORLD_WIDTH + OBSTACLE_INTERVAL + (index * (OBSTACLE_INTERVAL + 52)));
-        float y = 0;
+        float x = (WORLD_WIDTH + OBSTACLE_INTERVAL + (index * (OBSTACLE_INTERVAL + OBSTACLE_WIDTH)));
+        float y = randomizeYPosition();
 
-        var obstacle1 = new Obstacle("ForkSprite.png", x, y, OBSTACLE_SPEED);
+        var obstacle1 = new Obstacle("ForkSprite.png", x, y, OBSTACLE_SPEED, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
         var obstacle2 = new Obstacle(
-            "KnifeSprite.png", x, y + obstacle1.getHeight() + OBSTACLE_GAP, OBSTACLE_SPEED);
+            "KnifeSprite.png", x, y + obstacle1.getHeight() + OBSTACLE_GAP, OBSTACLE_SPEED, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
 
         return new ObstaclePair(
             obstacle1,
             obstacle2
         );
 
+    }
+
+    private float randomizeYPosition() {
+        return ThreadLocalRandom.current().nextInt(OBSTACLE_HEIGHT - (OBSTACLE_HEIGHT / 5)) * -1;
     }
 
     /**

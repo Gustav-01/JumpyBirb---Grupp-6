@@ -9,14 +9,16 @@ public class Obstacle {
     float x, y;
     float speed;
 
-    float width = 52;
-    float height = 360;
+    float width;
+    float height;
 
-    public Obstacle(String file, float x, float y, float speed) {
+    public Obstacle(String file, float x, float y, float speed, float width, float height) {
         this.texture = new Texture(file);
         this.x = x;
         this.y = y;
         this.speed = speed;
+        this.width = width;
+        this.height = height;
     }
 
     public void update(float delta) {

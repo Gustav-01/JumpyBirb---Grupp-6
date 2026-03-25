@@ -133,10 +133,18 @@ public class GameScreen implements Screen {
 
             // Looping
             if (obstaclePair.getX() + obstaclePair.getWidth() <= 0) {
-                obstaclePair.setX(
-                    obstaclePairs.get(obstaclePairs.size() - 1)
-                        .getPositionFork().getX() + obstaclePair.getWidth() + OBSTACLE_INTERVAL
-                );
+                if (obstaclePairs.indexOf(obstaclePair) == 0) {
+                    obstaclePair.setX(
+                        obstaclePairs.getLast()
+                            .getPositionFork().getX() + obstaclePair.getWidth() + OBSTACLE_INTERVAL
+                    );
+                } else {
+                    obstaclePair.setX(
+                        obstaclePairs.get(obstaclePairs.indexOf(obstaclePair) - 1)
+                            .getPositionFork().getX() + obstaclePair.getWidth() + OBSTACLE_INTERVAL
+                    );
+                }
+
             }
 
             // Rita hinder

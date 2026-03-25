@@ -22,8 +22,8 @@ public class ObstaclePair {
         knife.update(delta);
         fork.update(delta);
 
-        positionKnife.x = knife.getX();
-        positionFork.x = fork.getX();
+        positionKnife.setX(knife.getX());
+        positionFork.setX(fork.getX());
     }
 
     public Rectangle getPositionFork() {

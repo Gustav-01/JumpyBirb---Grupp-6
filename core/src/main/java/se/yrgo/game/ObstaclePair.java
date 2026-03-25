@@ -1,14 +1,18 @@
 package se.yrgo.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Pool;
 
-public class ObstaclePair {
+import java.util.concurrent.ThreadLocalRandom;
+
+public class ObstaclePair implements Pool.Poolable {
     private Obstacle knife;
     private Obstacle fork;
     private Rectangle positionKnife;
     private Rectangle positionFork;
-
+    private boolean alive;
 
     public ObstaclePair(Obstacle k, Obstacle f) {
         this.knife = k;
@@ -16,6 +20,8 @@ public class ObstaclePair {
 
         positionKnife = new Rectangle(knife.getX(), knife.getY(), knife.getWidth(), knife.getHeight());
         positionFork = new Rectangle(fork.getX(), fork.getY(), fork.getWidth(), fork.getHeight());
+
+        alive = false;
     }
 
     public void update(float delta) {
@@ -27,6 +33,14 @@ public class ObstaclePair {
 
         positionFork.setX(fork.getX());
         positionFork.setY(fork.getY());
+
+        if (outsideScreen()) {
+            alive = false;
+        }
+    }
+
+    private boolean outsideScreen() {
+        return positionFork.getX() < -GameScreen.OBSTACLE_WIDTH;
     }
 
     public Rectangle getPositionFork() {
@@ -38,7 +52,7 @@ public class ObstaclePair {
     }
 
     public float getX() {
-       return knife.getX();
+        return knife.getX();
     }
 
     public float getWidth() {
@@ -62,4 +76,35 @@ public class ObstaclePair {
         knife.render(batch);
         fork.render(batch);
     }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    @Override
+    public void reset() {
+        alive = false;
+
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+
+        fork.setX(screenWidth);
+        knife.setX(screenWidth);
+    }
+
+    public void init() {
+        float y = randomizeYPosition();
+        fork.setY(y);
+        knife.setY(y + GameScreen.OBSTACLE_GAP + GameScreen.OBSTACLE_HEIGHT);
+
+        alive = true;
+    }
+
+    private float randomizeYPosition() {
+        float y = ThreadLocalRandom.current().nextInt(
+            GameScreen.OBSTACLE_HEIGHT - (GameScreen.OBSTACLE_HEIGHT / 5)) * -1;
+        return y;
+    }
+
+
 }

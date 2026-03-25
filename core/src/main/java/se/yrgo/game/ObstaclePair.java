@@ -23,7 +23,10 @@ public class ObstaclePair {
         fork.update(delta);
 
         positionKnife.setX(knife.getX());
+        positionKnife.setY(knife.getY());
+
         positionFork.setX(fork.getX());
+        positionFork.setY(fork.getY());
     }
 
     public Rectangle getPositionFork() {
@@ -45,6 +48,11 @@ public class ObstaclePair {
     public void setX(float x) {
         fork.setX(x);
         knife.setX(x);
+    }
+
+    public void setY(float forkY, float knifeY) {
+        fork.setY(forkY);
+        knife.setY(knifeY);
     }
 
     public void render(SpriteBatch batch) {

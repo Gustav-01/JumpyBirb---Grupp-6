@@ -141,11 +141,16 @@ public class GameScreen implements Screen {
                         obstaclePairs.getLast()
                             .getPositionFork().getX() + obstaclePair.getWidth() + OBSTACLE_INTERVAL
                     );
+
+                    float newYPos = randomizeYPosition();
+                    obstaclePair.setY(newYPos, newYPos + OBSTACLE_HEIGHT + OBSTACLE_GAP);
                 } else {
                     obstaclePair.setX(
                         obstaclePairs.get(obstaclePairs.indexOf(obstaclePair) - 1)
                             .getPositionFork().getX() + obstaclePair.getWidth() + OBSTACLE_INTERVAL
                     );
+                    float newYPos = randomizeYPosition();
+                    obstaclePair.setY(newYPos, newYPos + OBSTACLE_HEIGHT + OBSTACLE_GAP);
                 }
 
             }
@@ -190,7 +195,8 @@ public class GameScreen implements Screen {
     }
 
     private float randomizeYPosition() {
-        return ThreadLocalRandom.current().nextInt(OBSTACLE_HEIGHT - (OBSTACLE_HEIGHT / 5)) * -1;
+        float y = ThreadLocalRandom.current().nextInt(OBSTACLE_HEIGHT - (OBSTACLE_HEIGHT / 5)) * -1;
+        return y;
     }
 
     /**

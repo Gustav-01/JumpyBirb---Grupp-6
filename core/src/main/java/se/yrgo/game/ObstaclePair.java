@@ -52,7 +52,10 @@ public class ObstaclePair {
 
     public void setY(float forkY, float knifeY) {
         fork.setY(forkY);
+        positionFork.setY(forkY);
+
         knife.setY(knifeY);
+        positionKnife.setY(knifeY);
     }
 
     public void render(SpriteBatch batch) {

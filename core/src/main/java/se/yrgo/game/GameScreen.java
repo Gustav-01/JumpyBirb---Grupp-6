@@ -183,13 +183,13 @@ public class GameScreen implements Screen {
         float x = (WORLD_WIDTH + OBSTACLE_INTERVAL + (index * (OBSTACLE_INTERVAL + OBSTACLE_WIDTH)));
         float y = randomizeYPosition();
 
-        var obstacle1 = new Obstacle("ForkSprite.png", x, y, OBSTACLE_SPEED, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
-        var obstacle2 = new Obstacle(
-            "KnifeSprite.png", x, y + obstacle1.getHeight() + OBSTACLE_GAP, OBSTACLE_SPEED, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
+        var fork = new Obstacle("ForkSprite.png", x, y, OBSTACLE_SPEED, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
+        var knife = new Obstacle(
+            "KnifeSprite.png", x, y + fork.getHeight() + OBSTACLE_GAP, OBSTACLE_SPEED, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
 
         return new ObstaclePair(
-            obstacle1,
-            obstacle2
+            knife,
+            fork
         );
 
     }

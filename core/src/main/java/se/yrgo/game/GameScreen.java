@@ -23,6 +23,8 @@ public class GameScreen implements Screen {
     private static final int WORLD_WIDTH = 800;
     private static final int WORLD_HEIGHT = 600;
     private static final int OBSTACLE_GAP = 150;
+    private static final int OBSTACLE_SPEED = 150;
+    private static final int OBSTACLE_INTERVAL = Gdx.graphics.getWidth() / 5;
 
     private final BirbGame game;
     private SpriteBatch batch;
@@ -36,7 +38,7 @@ public class GameScreen implements Screen {
     private Obstacle obstacle1;
     private Obstacle obstacle2;
 
-    private List<ObstaclePair> obstaclePairs = new ArrayList<>();
+    private List<ObstaclePair> obstaclePairs;
 
     private int screenWidth;
 
@@ -60,24 +62,26 @@ public class GameScreen implements Screen {
         background.setPosition(0, 0);
 
         screenWidth = Gdx.graphics.getWidth();
+//
+//        obstacle1 = new Obstacle("ForkSprite.png", screenWidth + 200, -100, 150);
+//        obstacle2 = new Obstacle("KnifeSprite.png", screenWidth + 200, (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150);
+//
+//        ObstaclePair pair1 = new ObstaclePair(obstacle1, obstacle2);
+//        obstaclePairs.add(pair1);
+//
+//        ObstaclePair pair2 = new ObstaclePair(
+//            new Obstacle("ForkSprite.png", screenWidth + 500, 0, 150),
+//            new Obstacle("KnifeSprite.png", screenWidth + 500, (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150));
+//
+//        obstaclePairs.add(pair2);
+//
+//        ObstaclePair pair3 = new ObstaclePair(
+//            new Obstacle("ForkSprite.png", screenWidth + 800, -300, 150),
+//            new Obstacle("KnifeSprite.png", screenWidth + 800, (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150));
+//
+//        obstaclePairs.add(pair3);
 
-        obstacle1 = new Obstacle("ForkSprite.png", screenWidth + 200, -100, 150);
-        obstacle2 = new Obstacle("KnifeSprite.png", screenWidth + 200, (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150);
-
-        ObstaclePair pair1 = new ObstaclePair(obstacle1, obstacle2);
-        obstaclePairs.add(pair1);
-
-        ObstaclePair pair2 = new ObstaclePair(
-            new Obstacle("ForkSprite.png", screenWidth + 500, 0, 150),
-            new Obstacle("KnifeSprite.png", screenWidth + 500, (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150));
-
-        obstaclePairs.add(pair2);
-
-        ObstaclePair pair3 = new ObstaclePair(
-            new Obstacle("ForkSprite.png", screenWidth + 800, -300, 150),
-            new Obstacle("KnifeSprite.png", screenWidth + 800, (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150));
-
-        obstaclePairs.add(pair3);
+        obstaclePairs = getObstacles();
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -129,7 +133,10 @@ public class GameScreen implements Screen {
 
             // Looping
             if (obstaclePair.getX() + obstaclePair.getWidth() <= 0) {
-                obstaclePair.setX(screenWidth + 200);
+                obstaclePair.setX(
+                    obstaclePairs.get(obstaclePairs.size() - 1)
+                        .getPositionFork().getX() + obstaclePair.getWidth() + OBSTACLE_INTERVAL
+                );
             }
 
             // Rita hinder
@@ -138,6 +145,37 @@ public class GameScreen implements Screen {
 
 
         batch.end();
+    }
+
+    private List<ObstaclePair> getObstacles() {
+        List<ObstaclePair> obstacles = new ArrayList<>();
+
+        int obstacleTotalCount = 5;
+        for (int i = 0; i < obstacleTotalCount; i++) {
+            obstacles.add(generateObstacle(obstacleTotalCount, i));
+        }
+
+        return obstacles;
+    }
+
+    private ObstaclePair generateObstacle(int obstacleTotalCount, int index) {
+//        obstacle1 = new Obstacle("ForkSprite.png", screenWidth + OBSTACLE_INTERVAL, -100, 150);
+//        obstacle2 = new Obstacle("KnifeSprite.png", screenWidth + OBSTACLE_INTERVAL,
+//            (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150);
+
+//        float x = (WORLD_WIDTH / (float)obstacleTotalCount + WORLD_WIDTH + (index * (WORLD_WIDTH / (float)obstacleTotalCount)));
+        float x = (WORLD_WIDTH + OBSTACLE_INTERVAL + (index * (OBSTACLE_INTERVAL + 52)));
+        float y = 0;
+
+        var obstacle1 = new Obstacle("ForkSprite.png", x, y, OBSTACLE_SPEED);
+        var obstacle2 = new Obstacle(
+            "KnifeSprite.png", x, y + obstacle1.getHeight() + OBSTACLE_GAP, OBSTACLE_SPEED);
+
+        return new ObstaclePair(
+            obstacle1,
+            obstacle2
+        );
+
     }
 
     /**

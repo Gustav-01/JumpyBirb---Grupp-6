@@ -43,35 +43,6 @@ public class ObstaclePair implements Pool.Poolable {
         return positionFork.getX() < -GameScreen.OBSTACLE_WIDTH;
     }
 
-    public Rectangle getPositionFork() {
-        return positionFork;
-    }
-
-    public Rectangle getPositionKnife() {
-        return positionKnife;
-    }
-
-    public float getX() {
-        return knife.getX();
-    }
-
-    public float getWidth() {
-        return knife.getWidth();
-    }
-
-    public void setX(float x) {
-        fork.setX(x);
-        knife.setX(x);
-    }
-
-    public void setY(float forkY, float knifeY) {
-        fork.setY(forkY);
-        positionFork.setY(forkY);
-
-        knife.setY(knifeY);
-        positionKnife.setY(knifeY);
-    }
-
     public void render(SpriteBatch batch) {
         knife.render(batch);
         fork.render(batch);
@@ -106,5 +77,32 @@ public class ObstaclePair implements Pool.Poolable {
         return y;
     }
 
-
+//    public Rectangle getPositionFork() {
+//        return positionFork;
+//    }
+//
+//    public Rectangle getPositionKnife() {
+//        return positionKnife;
+//    }
+//
+//    public float getX() {
+//        return knife.getX();
+//    }
+//
+//    public float getWidth() {
+//        return knife.getWidth();
+//    }
+//
+//    public void setX(float x) {
+//        fork.setX(x);
+//        knife.setX(x);
+//    }
+//
+//    public void setY(float forkY, float knifeY) {
+//        fork.setY(forkY);
+//        positionFork.setY(forkY);
+//
+//        knife.setY(knifeY);
+//        positionKnife.setY(knifeY);
+//    }
 }

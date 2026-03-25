@@ -46,8 +46,6 @@ public class GameScreen implements Screen {
     private Obstacle obstacle1;
     private Obstacle obstacle2;
 
-    private List<ObstaclePair> obstaclePairs;
-
     private Pool<ObstaclePair> obstaclePool;
     private List<ObstaclePair> activeObstacles = new ArrayList<>();
 
@@ -73,7 +71,6 @@ public class GameScreen implements Screen {
         background.setPosition(0, 0);
 
         screenWidth = Gdx.graphics.getWidth();
-
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -142,76 +139,12 @@ public class GameScreen implements Screen {
         background.draw(batch);
         kiwi.draw(batch);
 
-//
-//        for (ObstaclePair obstaclePair : obstaclePairs) {
-//            obstaclePair.update(delta);
-//
-//            // Looping
-//            if (obstaclePair.getX() + obstaclePair.getWidth() <= 0) {
-//                if (obstaclePairs.indexOf(obstaclePair) == 0) {
-//                    obstaclePair.setX(
-//                        obstaclePairs.getLast()
-//                            .getPositionFork().getX() + obstaclePair.getWidth() + OBSTACLE_INTERVAL
-//                    );
-//
-//                    float newYPos = randomizeYPosition();
-//                    obstaclePair.setY(newYPos, newYPos + OBSTACLE_HEIGHT + OBSTACLE_GAP);
-//                } else {
-//                    obstaclePair.setX(
-//                        obstaclePairs.get(obstaclePairs.indexOf(obstaclePair) - 1)
-//                            .getPositionFork().getX() + obstaclePair.getWidth() + OBSTACLE_INTERVAL
-//                    );
-//                    float newYPos = randomizeYPosition();
-//                    obstaclePair.setY(newYPos, newYPos + OBSTACLE_HEIGHT + OBSTACLE_GAP);
-//                }
-//
-//            }
-//
-//            // Rita hinder
-//            obstaclePair.render(batch);
-//        }
 
         for (ObstaclePair obs : activeObstacles) {
             obs.render(batch);
         }
 
         batch.end();
-    }
-
-    private List<ObstaclePair> getObstacles() {
-        List<ObstaclePair> obstacles = new ArrayList<>();
-
-        int obstacleTotalCount = 5;
-        for (int i = 0; i < obstacleTotalCount; i++) {
-            obstacles.add(generateObstacle(obstacleTotalCount, i));
-        }
-
-        return obstacles;
-    }
-
-    private ObstaclePair generateObstacle(int obstacleTotalCount, int index) {
-//        obstacle1 = new Obstacle("ForkSprite.png", screenWidth + OBSTACLE_INTERVAL, -100, 150);
-//        obstacle2 = new Obstacle("KnifeSprite.png", screenWidth + OBSTACLE_INTERVAL,
-//            (obstacle1.getY() + obstacle1.getHeight() + OBSTACLE_GAP), 150);
-
-//        float x = (WORLD_WIDTH / (float)obstacleTotalCount + WORLD_WIDTH + (index * (WORLD_WIDTH / (float)obstacleTotalCount)));
-        float x = (WORLD_WIDTH + OBSTACLE_INTERVAL + (index * (OBSTACLE_INTERVAL + OBSTACLE_WIDTH)));
-        float y = randomizeYPosition();
-
-        var fork = new Obstacle("ForkSprite.png", x, y, OBSTACLE_SPEED, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
-        var knife = new Obstacle(
-            "KnifeSprite.png", x, y + fork.getHeight() + OBSTACLE_GAP, OBSTACLE_SPEED, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
-
-        return new ObstaclePair(
-            knife,
-            fork
-        );
-
-    }
-
-    private float randomizeYPosition() {
-        float y = ThreadLocalRandom.current().nextInt(OBSTACLE_HEIGHT - (OBSTACLE_HEIGHT / 5)) * -1;
-        return y;
     }
 
     /**

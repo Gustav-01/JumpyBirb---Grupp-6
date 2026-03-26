@@ -31,6 +31,8 @@ public class GameScreen implements Screen {
     public static final int OBSTACLE_INTERVAL = Gdx.graphics.getWidth() / 3;
     public static final int OBSTACLE_WIDTH = 52;
     public static final int OBSTACLE_HEIGHT = 360;
+    public static final float KIWI_WIDTH = 76.3f / 0.7f;
+    public static final float KIWI_HEIGHT = 56.9f / 0.7f;
 
     private float secondsPassed;
 
@@ -62,7 +64,7 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
 
         kiwi = new Sprite(new Texture("Kiwi_wing_up.png"));
-        kiwi.setSize(153.6f, 102.4f);
+        kiwi.setSize(KIWI_WIDTH, KIWI_HEIGHT);
         kiwi.setPosition(WORLD_WIDTH / 5f, WORLD_HEIGHT / 2f);
 
         // Background

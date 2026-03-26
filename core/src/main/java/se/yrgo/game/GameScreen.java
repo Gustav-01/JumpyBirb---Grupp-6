@@ -26,11 +26,11 @@ public class GameScreen implements Screen {
 
     private static final int WORLD_WIDTH = 800;
     private static final int WORLD_HEIGHT = 600;
-    public static final int OBSTACLE_GAP = 150;
+    public static final int OBSTACLE_GAP = 170;
     public static final int OBSTACLE_SPEED = 150;
     public static final int OBSTACLE_INTERVAL = Gdx.graphics.getWidth() / 3;
     public static final int OBSTACLE_WIDTH = 52;
-    public static final int OBSTACLE_HEIGHT = 360;
+    public static final int OBSTACLE_HEIGHT = 460;
 
     private float secondsPassed;
 

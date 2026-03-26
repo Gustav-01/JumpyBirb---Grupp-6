@@ -73,7 +73,7 @@ public class ObstaclePair implements Pool.Poolable {
 
     private float randomizeYPosition() {
         float y = ThreadLocalRandom.current().nextInt(
-            GameScreen.OBSTACLE_HEIGHT - (GameScreen.OBSTACLE_HEIGHT / 5)) * -1;
+            GameScreen.OBSTACLE_HEIGHT / 5, GameScreen.OBSTACLE_HEIGHT - (GameScreen.OBSTACLE_HEIGHT / 4)) * -1;
         return y;
     }
 

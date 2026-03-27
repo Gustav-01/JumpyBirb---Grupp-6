@@ -9,19 +9,22 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import se.yrgo.game.constants.GameFunctionalityConstants;
+import se.yrgo.game.constants.KiwiConstants;
+import se.yrgo.game.constants.ObstacleConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The main screen of the game, where the game mechanics take place.
  */
 public class GameScreen implements Screen {
-    private static final int WORLD_WIDTH = 800;
-    private static final int WORLD_HEIGHT = 600;
-
-    private static final float KIWI_WIDTH = 153.6f;
-    private static final float KIWI_HEIGHT = 102.4f;
+    private float secondsPassed;
 
     private final BirbGame game;
     private SpriteBatch batch;
@@ -34,6 +37,9 @@ public class GameScreen implements Screen {
 
     private Obstacle obstacle1;
     private Obstacle obstacle2;
+
+    private Pool<ObstaclePair> obstaclePool;
+    private List<ObstaclePair> activeObstacles = new ArrayList<>();
 
     private int screenWidth;
     private boolean gameOver = false;
@@ -49,23 +55,20 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
 
         kiwi = new Sprite(new Texture("Kiwi_wing_up.png"));
-        kiwi.setSize(153.6f, 102.4f);
-        kiwi.setPosition(WORLD_WIDTH / 5f, WORLD_HEIGHT / 2f);
+        kiwi.setSize(KiwiConstants.KIWI_WIDTH, KiwiConstants.KIWI_HEIGHT);
+        kiwi.setPosition(GameFunctionalityConstants.WORLD_WIDTH / 5f, GameFunctionalityConstants.WORLD_HEIGHT / 2f);
 
         // Background
         background = new Sprite(new Texture("background.png"));
-        background.setSize(WORLD_WIDTH, WORLD_HEIGHT);
+        background.setSize(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT);
         background.setPosition(0, 0);
 
         screenWidth = Gdx.graphics.getWidth();
 
-        obstacle1 = new Obstacle("ForkSprite.png", screenWidth + 200, 100, 150);
-        obstacle2 = new Obstacle("KnifeSprite.png", screenWidth + 600, 100, 150);
-
         camera = new OrthographicCamera();
-        viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+        viewport = new FitViewport(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, camera);
 
-        camera.position.set(WORLD_WIDTH, WORLD_HEIGHT, 0);
+        camera.position.set(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, 0);
         camera.update();
     }
 
@@ -82,9 +85,10 @@ public class GameScreen implements Screen {
             return;
         }
 
+        updateState(delta);
         draw(delta);
 
-        checkForGameOver();
+
 
         // Jump logic
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -98,9 +102,30 @@ public class GameScreen implements Screen {
             kiwi.setY(0);
             velocityY = 0;
         }
+        checkForGameOver();
 
     }
 
+    private void updateState(float delta) {
+        secondsPassed += delta;
+
+        if (secondsPassed > GameFunctionalityConstants.SECONDS_BETWEEN_OBSTACLES) {
+            spawnObstacle();
+            secondsPassed = 0;
+        }
+
+        List<ObstaclePair> toRemove = new ArrayList<>();
+        for (ObstaclePair obs : activeObstacles) {
+            obs.update(delta);
+
+            if (!obs.isAlive()) {
+                toRemove.add(obs);
+                obstaclePool.free(obs);
+            }
+        }
+
+        activeObstacles.removeAll(toRemove);
+    }
 
     /**
      * Helper method for drawing all textures in a frame.
@@ -118,12 +143,8 @@ public class GameScreen implements Screen {
         obstacle1.update(delta);
         obstacle2.update(delta);
 
-        // Looping
-        if (obstacle1.x + obstacle1.width <= 0) {
-            obstacle1.x = screenWidth + 200;
-        }
-        if (obstacle2.x + obstacle2.width <= 0) {
-            obstacle2.x = screenWidth + 600;
+        for (ObstaclePair obs : activeObstacles) {
+            obs.render(batch);
         }
 
         // Rita hinder
@@ -153,6 +174,44 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        initPool();
+
+        spawnObstacle();
+    }
+
+    private void spawnObstacle() {
+        var obstacle = obstaclePool.obtain();
+        obstacle.init();
+        activeObstacles.add(obstacle);
+    }
+
+    private void initPool() {
+        this.obstaclePool = new Pool<ObstaclePair>() {
+            @Override
+            protected ObstaclePair newObject() {
+
+                var fork = new Obstacle("ForkSprite.png",
+                    GameFunctionalityConstants.WORLD_WIDTH,
+                    0,
+                    ObstacleConstants.OBSTACLE_SPEED,
+                    ObstacleConstants.OBSTACLE_WIDTH,
+                    ObstacleConstants.OBSTACLE_HEIGHT
+                );
+                var knife = new Obstacle(
+                    "KnifeSprite.png",
+                    GameFunctionalityConstants.WORLD_WIDTH,
+                    ObstacleConstants.OBSTACLE_HEIGHT + ObstacleConstants.OBSTACLE_GAP,
+                    ObstacleConstants.OBSTACLE_SPEED,
+                    ObstacleConstants.OBSTACLE_WIDTH,
+                    ObstacleConstants.OBSTACLE_HEIGHT
+                );
+
+                return new ObstaclePair(
+                    knife,
+                    fork
+                );
+            }
+        };
     }
 
     @Override

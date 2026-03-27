@@ -58,6 +58,7 @@ public class ObstaclePair implements Pool.Poolable {
         alive = false;
 
         int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
 
         fork.setX(screenWidth);
         knife.setX(screenWidth);

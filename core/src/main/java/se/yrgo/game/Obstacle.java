@@ -9,14 +9,16 @@ public class Obstacle {
     float x, y;
     float speed;
 
-    float width = 52;
-    float height = 320;
+    float width;
+    float height;
 
-    public Obstacle(String file, float x, float y, float speed) {
+    public Obstacle(String file, float x, float y, float speed, float width, float height) {
         this.texture = new Texture(file);
         this.x = x;
         this.y = y;
         this.speed = speed;
+        this.width = width;
+        this.height = height;
     }
 
     public void update(float delta) {
@@ -25,5 +27,29 @@ public class Obstacle {
 
     public void render(SpriteBatch batch) {
         batch.draw(texture, x, y, width, height);
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }

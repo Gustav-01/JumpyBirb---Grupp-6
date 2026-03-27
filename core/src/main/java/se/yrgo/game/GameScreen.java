@@ -13,27 +13,17 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import se.yrgo.game.constants.GameFunctionalityConstants;
+import se.yrgo.game.constants.KiwiConstants;
+import se.yrgo.game.constants.ObstacleConstants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The main screen of the game, where the game mechanics take place.
  */
 public class GameScreen implements Screen {
-    //TODO cleanup: Move constants to seperate classes
-
-    private static final int WORLD_WIDTH = 800;
-    private static final int WORLD_HEIGHT = 600;
-    public static final int OBSTACLE_GAP = 170;
-    public static final int OBSTACLE_SPEED = 150;
-    public static final int OBSTACLE_INTERVAL = Gdx.graphics.getWidth() / 3;
-    public static final int OBSTACLE_WIDTH = 52;
-    public static final int OBSTACLE_HEIGHT = 360;
-    public static final float KIWI_WIDTH = 76.3f / 0.7f;
-    public static final float KIWI_HEIGHT = 56.9f / 0.7f;
-
     private float secondsPassed;
 
     private final BirbGame game;
@@ -64,20 +54,20 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
 
         kiwi = new Sprite(new Texture("Kiwi_wing_up.png"));
-        kiwi.setSize(KIWI_WIDTH, KIWI_HEIGHT);
-        kiwi.setPosition(WORLD_WIDTH / 5f, WORLD_HEIGHT / 2f);
+        kiwi.setSize(KiwiConstants.KIWI_WIDTH, KiwiConstants.KIWI_HEIGHT);
+        kiwi.setPosition(GameFunctionalityConstants.WORLD_WIDTH / 5f, GameFunctionalityConstants.WORLD_HEIGHT / 2f);
 
         // Background
         background = new Sprite(new Texture("background.png"));
-        background.setSize(WORLD_WIDTH, WORLD_HEIGHT);
+        background.setSize(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT);
         background.setPosition(0, 0);
 
         screenWidth = Gdx.graphics.getWidth();
 
         camera = new OrthographicCamera();
-        viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+        viewport = new FitViewport(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, camera);
 
-        camera.position.set(WORLD_WIDTH, WORLD_HEIGHT, 0);
+        camera.position.set(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, 0);
         camera.update();
     }
 
@@ -111,7 +101,7 @@ public class GameScreen implements Screen {
     private void updateState(float delta) {
         secondsPassed += delta;
 
-        if (secondsPassed > 3f) {
+        if (secondsPassed > GameFunctionalityConstants.SECONDS_BETWEEN_OBSTACLES) {
             spawnObstacle();
             secondsPassed = 0;
         }
@@ -179,19 +169,19 @@ public class GameScreen implements Screen {
             protected ObstaclePair newObject() {
 
                 var fork = new Obstacle("ForkSprite.png",
-                    WORLD_WIDTH,
+                    GameFunctionalityConstants.WORLD_WIDTH,
                     0,
-                    OBSTACLE_SPEED,
-                    OBSTACLE_WIDTH,
-                    OBSTACLE_HEIGHT
+                    ObstacleConstants.OBSTACLE_SPEED,
+                    ObstacleConstants.OBSTACLE_WIDTH,
+                    ObstacleConstants.OBSTACLE_HEIGHT
                 );
                 var knife = new Obstacle(
                     "KnifeSprite.png",
-                    WORLD_WIDTH,
-                    OBSTACLE_HEIGHT + OBSTACLE_GAP,
-                    OBSTACLE_SPEED,
-                    OBSTACLE_WIDTH,
-                    OBSTACLE_HEIGHT
+                    GameFunctionalityConstants.WORLD_WIDTH,
+                    ObstacleConstants.OBSTACLE_HEIGHT + ObstacleConstants.OBSTACLE_GAP,
+                    ObstacleConstants.OBSTACLE_SPEED,
+                    ObstacleConstants.OBSTACLE_WIDTH,
+                    ObstacleConstants.OBSTACLE_HEIGHT
                 );
 
                 return new ObstaclePair(

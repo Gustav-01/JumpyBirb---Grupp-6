@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Pool;
+import se.yrgo.game.constants.ObstacleConstants;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -40,7 +41,7 @@ public class ObstaclePair implements Pool.Poolable {
     }
 
     private boolean outsideScreen() {
-        return positionFork.getX() < -GameScreen.OBSTACLE_WIDTH;
+        return positionFork.getX() < -ObstacleConstants.OBSTACLE_WIDTH;
     }
 
     public void render(SpriteBatch batch) {
@@ -66,14 +67,14 @@ public class ObstaclePair implements Pool.Poolable {
     public void init() {
         float y = randomizeYPosition();
         fork.setY(y);
-        knife.setY(y + GameScreen.OBSTACLE_GAP + GameScreen.OBSTACLE_HEIGHT);
+        knife.setY(y + ObstacleConstants.OBSTACLE_GAP + ObstacleConstants.OBSTACLE_HEIGHT);
 
         alive = true;
     }
 
     private float randomizeYPosition() {
         float y = ThreadLocalRandom.current().nextInt(
-            GameScreen.OBSTACLE_HEIGHT / 5, GameScreen.OBSTACLE_HEIGHT - (GameScreen.OBSTACLE_HEIGHT / 4)) * -1;
+            ObstacleConstants.OBSTACLE_HEIGHT / 5, ObstacleConstants.OBSTACLE_HEIGHT - (ObstacleConstants.OBSTACLE_HEIGHT / 4)) * -1;
         return y;
     }
 

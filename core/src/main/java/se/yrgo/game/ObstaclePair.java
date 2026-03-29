@@ -8,13 +8,24 @@ import se.yrgo.game.constants.ObstacleConstants;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Represents a pair of obstacles that move together.
+ * Handles position updates, rendering, and pooling state.
+ */
 public class ObstaclePair implements Pool.Poolable {
     private Obstacle knife;
     private Obstacle fork;
     private Rectangle positionKnife;
     private Rectangle positionFork;
     private boolean alive;
+    private boolean isScored;
 
+    /**
+     * Creates a new obstacle pair using two obstacle objects.
+     *
+     * @param k the upper obstacle
+     * @param f the lower obstacle
+     */
     public ObstaclePair(Obstacle k, Obstacle f) {
         this.knife = k;
         this.fork = f;
@@ -23,6 +34,7 @@ public class ObstaclePair implements Pool.Poolable {
         positionFork = new Rectangle(fork.getX(), fork.getY(), fork.getWidth(), fork.getHeight());
 
         alive = false;
+        isScored = false;
     }
 
     public void update(float delta) {
@@ -56,6 +68,7 @@ public class ObstaclePair implements Pool.Poolable {
     @Override
     public void reset() {
         alive = false;
+        isScored = false;
 
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
@@ -77,6 +90,23 @@ public class ObstaclePair implements Pool.Poolable {
             ObstacleConstants.OBSTACLE_HEIGHT / 5, ObstacleConstants.OBSTACLE_HEIGHT - (ObstacleConstants.OBSTACLE_HEIGHT / 4)) * -1;
         return y;
     }
+
+    /**
+     * Check if kiwi have passed the obstaclePair to increase the current score
+     * @param kiwiX position of the kiwi
+     * @return true if kiwi is past the obstaclePair, false if not
+     */
+    public boolean checkIfPassed(float kiwiX) {
+        float obstacleRightEdge = fork.getX() + fork.getWidth();
+
+        if (!isScored && kiwiX > obstacleRightEdge) {
+            isScored = true;
+            return true;
+        }
+
+        return false;
+    }
+
 
 //    public Rectangle getPositionFork() {
 //        return positionFork;

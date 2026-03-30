@@ -82,7 +82,7 @@ public class GameScreen implements Screen {
         draw(delta);
 
 
-        // Jump logic
+        // Jump logic todo move?
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             velocityY = jumpForce;
         }
@@ -100,8 +100,9 @@ public class GameScreen implements Screen {
     }
 
     private void updateState(float delta) {
-        secondsPassed += delta;
+        kiwi.update();
 
+        secondsPassed += delta;
         if (secondsPassed > GameFunctionalityConstants.SECONDS_BETWEEN_OBSTACLES) {
             spawnObstacle();
             secondsPassed = 0;
@@ -116,10 +117,8 @@ public class GameScreen implements Screen {
                 obstaclePool.free(obs);
             }
         }
-
         activeObstacles.removeAll(toRemove);
 
-        kiwi.update();
     }
 
     /**
@@ -133,7 +132,6 @@ public class GameScreen implements Screen {
         batch.begin();
         background.draw(batch);
         kiwi.draw(batch);
-
 
         for (ObstaclePair obs : activeObstacles) {
             obs.render(batch);

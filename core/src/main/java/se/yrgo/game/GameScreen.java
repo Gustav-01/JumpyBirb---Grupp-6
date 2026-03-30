@@ -24,24 +24,19 @@ import java.util.List;
  * The main screen of the game, where the game mechanics take place.
  */
 public class GameScreen implements Screen {
-    private float secondsPassed;
 
     private final BirbGame game;
     private SpriteBatch batch;
     private Sprite kiwi;
+    private Sprite background;
 
     private Viewport viewport;
     private Camera camera;
 
-    private Sprite background;
-
-    private Obstacle obstacle1;
-    private Obstacle obstacle2;
-
     private Pool<ObstaclePair> obstaclePool;
     private List<ObstaclePair> activeObstacles = new ArrayList<>();
+    private float secondsPassed;
 
-    private int screenWidth;
     private boolean gameOver = false;
 
     // Variables for jump logic
@@ -51,25 +46,19 @@ public class GameScreen implements Screen {
 
     public GameScreen(BirbGame game) {
         this.game = game;
-
         batch = new SpriteBatch();
 
         kiwi = new Sprite(new Texture("Kiwi_wing_up.png"));
         kiwi.setSize(KiwiConstants.KIWI_WIDTH, KiwiConstants.KIWI_HEIGHT);
-        kiwi.setPosition(GameFunctionalityConstants.WORLD_WIDTH / 5f, GameFunctionalityConstants.WORLD_HEIGHT / 2f);
 
         // Background
         background = new Sprite(new Texture("background.png"));
         background.setSize(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT);
-        background.setPosition(0, 0);
-
-        screenWidth = Gdx.graphics.getWidth();
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, camera);
 
-        camera.position.set(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, 0);
-        camera.update();
+
     }
 
     /**
@@ -139,17 +128,10 @@ public class GameScreen implements Screen {
         background.draw(batch);
         kiwi.draw(batch);
 
-        // Uppdatera hinder
-        obstacle1.update(delta);
-        obstacle2.update(delta);
 
         for (ObstaclePair obs : activeObstacles) {
             obs.render(batch);
         }
-
-        // Rita hinder
-        obstacle1.render(batch);
-        obstacle2.render(batch);
 
         batch.end();
     }
@@ -174,6 +156,15 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        secondsPassed = 0;
+        activeObstacles.clear();
+        obstaclePool.clear();
+
+        kiwi.setPosition(GameFunctionalityConstants.WORLD_WIDTH / 5f, GameFunctionalityConstants.WORLD_HEIGHT / 2f);
+        background.setPosition(0, 0);
+        camera.position.set(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, 0);
+        camera.update();
+
         initPool();
 
         spawnObstacle();
@@ -228,8 +219,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        obstacle1.texture.dispose();
-        obstacle2.texture.dispose();
+
     }
 }
 

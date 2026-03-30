@@ -24,9 +24,8 @@ public class KiwiSprite {
     }
 
     public void update() {
-        //Logic for moving kiwi
-
-
+        bodyPosition.setY(sprite.getY() + sprite.getHeight() / 2f);
+        bodyPosition.setX(sprite.getX() + sprite.getWidth() / 2f);
     }
 
     public void draw(SpriteBatch batch) {
@@ -37,4 +36,19 @@ public class KiwiSprite {
         return Intersector.overlaps(bodyPosition, rectangle);
     }
 
+    public float getX() {
+        return this.sprite.getX();
+    }
+
+    public float getY() {
+        return this.sprite.getY();
+    }
+
+    public void setX(float x) {
+        this.sprite.setX(x);
+    }
+
+    public void setY(float y) {
+        this.sprite.setY(y);
+    }
 }

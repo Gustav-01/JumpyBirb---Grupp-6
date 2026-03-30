@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
 
     private final BirbGame game;
     private SpriteBatch batch;
-    private Sprite kiwi;
+    private KiwiSprite kiwi;
     private Sprite background;
 
     private Viewport viewport;
@@ -48,8 +48,13 @@ public class GameScreen implements Screen {
         this.game = game;
         batch = new SpriteBatch();
 
-        kiwi = new Sprite(new Texture("Kiwi_wing_up.png"));
-        kiwi.setSize(KiwiConstants.KIWI_WIDTH, KiwiConstants.KIWI_HEIGHT);
+        kiwi = new KiwiSprite(
+            new Texture("Kiwi_wing_up.png"),
+            KiwiConstants.KIWI_WIDTH,
+            KiwiConstants.KIWI_HEIGHT,
+            GameFunctionalityConstants.WORLD_WIDTH / 5f,
+            GameFunctionalityConstants.WORLD_HEIGHT / 2f
+        );
 
         // Background
         background = new Sprite(new Texture("background.png"));
@@ -57,7 +62,6 @@ public class GameScreen implements Screen {
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, camera);
-
 
     }
 
@@ -69,14 +73,13 @@ public class GameScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        if (gameOver){
+        if (gameOver) {
             game.gameOver();
             return;
         }
 
         updateState(delta);
         draw(delta);
-
 
 
         // Jump logic
@@ -91,6 +94,7 @@ public class GameScreen implements Screen {
             kiwi.setY(0);
             velocityY = 0;
         }
+
         checkForGameOver();
 
     }
@@ -114,6 +118,8 @@ public class GameScreen implements Screen {
         }
 
         activeObstacles.removeAll(toRemove);
+
+        kiwi.update();
     }
 
     /**
@@ -137,10 +143,12 @@ public class GameScreen implements Screen {
     }
 
     private void checkForGameOver() {
-        //Foreach Obstacle in obstacleList
-        //if (kiwi.overlaps(obstacle)){
-        //gameOver = true;
-        //}
+        for (ObstaclePair obstacle : activeObstacles) {
+            if (kiwi.overlaps(obstacle.getPositionFork()) ||
+                kiwi.overlaps(obstacle.getPositionKnife())) {
+                gameOver = true;
+            }
+        }
     }
 
     /**
@@ -158,9 +166,7 @@ public class GameScreen implements Screen {
     public void show() {
         secondsPassed = 0;
         activeObstacles.clear();
-        obstaclePool.clear();
 
-        kiwi.setPosition(GameFunctionalityConstants.WORLD_WIDTH / 5f, GameFunctionalityConstants.WORLD_HEIGHT / 2f);
         background.setPosition(0, 0);
         camera.position.set(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, 0);
         camera.update();

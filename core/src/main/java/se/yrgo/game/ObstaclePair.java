@@ -58,7 +58,6 @@ public class ObstaclePair implements Pool.Poolable {
         alive = false;
 
         int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
 
         fork.setX(screenWidth);
         knife.setX(screenWidth);
@@ -78,13 +77,13 @@ public class ObstaclePair implements Pool.Poolable {
         return y;
     }
 
-//    public Rectangle getPositionFork() {
-//        return positionFork;
-//    }
-//
-//    public Rectangle getPositionKnife() {
-//        return positionKnife;
-//    }
+    public Rectangle getPositionFork() {
+        return positionFork;
+    }
+
+    public Rectangle getPositionKnife() {
+        return positionKnife;
+    }
 //
 //    public float getX() {
 //        return knife.getX();

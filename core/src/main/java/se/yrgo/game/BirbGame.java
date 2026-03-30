@@ -23,5 +23,7 @@ public class BirbGame extends Game {
 
     public void gameOver(){
         setScreen(gameOverScreen);
+        //todo dispose GameScreen??
+        gameScreen.dispose();
     }
 }

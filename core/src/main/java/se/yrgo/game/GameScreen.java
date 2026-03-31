@@ -20,6 +20,7 @@ import se.yrgo.game.constants.ObstacleConstants;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * The main screen of the game, where the game mechanics take place.
  */
@@ -37,12 +38,13 @@ public class GameScreen implements Screen {
     private List<ObstaclePair> activeObstacles = new ArrayList<>();
     private float secondsPassed;
 
+    // Variable for jump logic
     private boolean gameOver = false;
 
     // Variables for jump logic
     private float velocityY = 0;
-    private final float gravity = -900f;
-    private final float jumpForce = 350f;
+
+    private int currentScore;
 
     public GameScreen(BirbGame game) {
         this.game = game;
@@ -55,6 +57,7 @@ public class GameScreen implements Screen {
             GameFunctionalityConstants.WORLD_WIDTH / 5f,
             GameFunctionalityConstants.WORLD_HEIGHT / 2f
         );
+        currentScore = 0;
 
         // Background
         background = new Sprite(new Texture("background.png"));
@@ -84,16 +87,24 @@ public class GameScreen implements Screen {
 
         // Jump logic todo move?
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            velocityY = jumpForce;
+            velocityY = KiwiConstants.JUMPFORCE;
         }
-        velocityY += gravity * delta;
-        float newPosition = kiwi.getY() + velocityY * delta;
-        kiwi.setY(newPosition);
 
-        if (kiwi.getY() < 0) {
-            kiwi.setY(0);
+        velocityY += GameFunctionalityConstants.GRAVITY * delta;
+        float newY = kiwi.getY() + velocityY * delta;
+
+        float minY = 0;
+        float maxY = GameFunctionalityConstants.WORLD_HEIGHT - KiwiConstants.KIWI_HEIGHT / 2f;
+
+        if (newY < minY) {
+            newY = minY;
+            velocityY = 0;
+        } else if (newY > maxY) {
+            newY = maxY;
             velocityY = 0;
         }
+
+        kiwi.setY(newY);
 
         checkForGameOver();
 
@@ -112,13 +123,17 @@ public class GameScreen implements Screen {
         for (ObstaclePair obs : activeObstacles) {
             obs.update(delta);
 
+            // ----- SCORE LOGIC -----
+            if (obs.isAlive() && obs.checkIfPassed(kiwi.getX())) {
+                currentScore++;
+            }
+
             if (!obs.isAlive()) {
                 toRemove.add(obs);
                 obstaclePool.free(obs);
             }
         }
         activeObstacles.removeAll(toRemove);
-
     }
 
     /**

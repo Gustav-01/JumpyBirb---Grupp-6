@@ -38,9 +38,8 @@ public class GameScreen implements Screen {
     private List<ObstaclePair> activeObstacles = new ArrayList<>();
     private float secondsPassed;
 
-    // Variables for jump logic
+    // Variable for jump logic
     private float velocityY = 0;
-    private final float jumpForce = 350f;
 
     private int currentScore;
 
@@ -77,7 +76,7 @@ public class GameScreen implements Screen {
 
         // Jump logic
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            velocityY = jumpForce;
+            velocityY = KiwiConstants.JUMPFORCE;
         }
 
         velocityY += GameFunctionalityConstants.GRAVITY * delta;
@@ -159,7 +158,6 @@ public class GameScreen implements Screen {
     public void show() {
         secondsPassed = 0;
         activeObstacles.clear();
-        obstaclePool.clear();
 
         kiwi.setPosition(GameFunctionalityConstants.WORLD_WIDTH / 5f, GameFunctionalityConstants.WORLD_HEIGHT / 2f);
         background.setPosition(0, 0);

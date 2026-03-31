@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
 
     private final BirbGame game;
     private SpriteBatch batch;
-    private Sprite kiwi;
+    private KiwiSprite kiwi;
     private Sprite background;
 
     private Viewport viewport;
@@ -39,6 +39,9 @@ public class GameScreen implements Screen {
     private float secondsPassed;
 
     // Variable for jump logic
+    private boolean gameOver = false;
+
+    // Variables for jump logic
     private float velocityY = 0;
 
     private int currentScore;
@@ -47,10 +50,14 @@ public class GameScreen implements Screen {
         this.game = game;
         batch = new SpriteBatch();
 
+        kiwi = new KiwiSprite(
+            new Texture("Kiwi_wing_up.png"),
+            KiwiConstants.KIWI_WIDTH,
+            KiwiConstants.KIWI_HEIGHT,
+            GameFunctionalityConstants.WORLD_WIDTH / 5f,
+            GameFunctionalityConstants.WORLD_HEIGHT / 2f
+        );
         currentScore = 0;
-
-        kiwi = new Sprite(new Texture("Kiwi_wing_up.png"));
-        kiwi.setSize(KiwiConstants.KIWI_WIDTH, KiwiConstants.KIWI_HEIGHT);
 
         // Background
         background = new Sprite(new Texture("background.png"));
@@ -58,7 +65,6 @@ public class GameScreen implements Screen {
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, camera);
-
 
     }
 
@@ -70,11 +76,16 @@ public class GameScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        updateState(delta);
+        if (gameOver) {
+            game.gameOver();
+            return;
+        }
 
+        updateState(delta);
         draw(delta);
 
-        // Jump logic
+
+        // Jump logic todo move?
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             velocityY = KiwiConstants.JUMPFORCE;
         }
@@ -83,7 +94,7 @@ public class GameScreen implements Screen {
         float newY = kiwi.getY() + velocityY * delta;
 
         float minY = 0;
-        float maxY = GameFunctionalityConstants.WORLD_HEIGHT - kiwi.getHeight() / 2f;
+        float maxY = GameFunctionalityConstants.WORLD_HEIGHT - KiwiConstants.KIWI_HEIGHT / 2f;
 
         if (newY < minY) {
             newY = minY;
@@ -95,11 +106,14 @@ public class GameScreen implements Screen {
 
         kiwi.setY(newY);
 
+        checkForGameOver();
+
     }
 
     private void updateState(float delta) {
-        secondsPassed += delta;
+        kiwi.update();
 
+        secondsPassed += delta;
         if (secondsPassed > GameFunctionalityConstants.SECONDS_BETWEEN_OBSTACLES) {
             spawnObstacle();
             secondsPassed = 0;
@@ -119,7 +133,6 @@ public class GameScreen implements Screen {
                 obstaclePool.free(obs);
             }
         }
-
         activeObstacles.removeAll(toRemove);
     }
 
@@ -135,12 +148,20 @@ public class GameScreen implements Screen {
         background.draw(batch);
         kiwi.draw(batch);
 
-
         for (ObstaclePair obs : activeObstacles) {
             obs.render(batch);
         }
 
         batch.end();
+    }
+
+    private void checkForGameOver() {
+        for (ObstaclePair obstacle : activeObstacles) {
+            if (kiwi.overlaps(obstacle.getPositionFork()) ||
+                kiwi.overlaps(obstacle.getPositionKnife())) {
+                gameOver = true;
+            }
+        }
     }
 
     /**
@@ -159,7 +180,6 @@ public class GameScreen implements Screen {
         secondsPassed = 0;
         activeObstacles.clear();
 
-        kiwi.setPosition(GameFunctionalityConstants.WORLD_WIDTH / 5f, GameFunctionalityConstants.WORLD_HEIGHT / 2f);
         background.setPosition(0, 0);
         camera.position.set(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, 0);
         camera.update();

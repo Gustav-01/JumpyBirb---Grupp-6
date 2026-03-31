@@ -1,11 +1,15 @@
 package se.yrgo.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import se.yrgo.game.constants.GameFunctionalityConstants;
+import se.yrgo.game.constants.KiwiConstants;
 
 /**
  * Class for the kiwi sprite containing logics for updating and tracking position, drawing sprite and checking for
@@ -15,6 +19,7 @@ public class KiwiSprite {
     private Texture texture;
     private Circle bodyPosition;
     private Sprite sprite;
+    private float velocityY = 0;
 
     /**
      * Creates a new kiwi sprite from the given texture and dimensions.
@@ -35,7 +40,27 @@ public class KiwiSprite {
             sprite.getY() + sprite.getHeight() / 2f, sprite.getHeight() / 2f);
     }
 
-    public void update() {
+    public void update(float delta) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            velocityY = KiwiConstants.JUMPFORCE;
+        }
+
+        velocityY += GameFunctionalityConstants.GRAVITY * delta;
+        float newY = sprite.getY() + velocityY * delta;
+
+        float minY = 0;
+        float maxY = GameFunctionalityConstants.WORLD_HEIGHT - KiwiConstants.KIWI_HEIGHT / 2f;
+
+        if (newY < minY) {
+            newY = minY;
+            velocityY = 0;
+        } else if (newY > maxY) {
+            newY = maxY;
+            velocityY = 0;
+        }
+
+        sprite.setY(newY);
+
         bodyPosition.setY(sprite.getY() + sprite.getHeight() / 2f);
         bodyPosition.setX(sprite.getX() + sprite.getWidth() / 2f);
     }

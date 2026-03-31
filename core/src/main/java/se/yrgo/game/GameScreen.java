@@ -41,9 +41,6 @@ public class GameScreen implements Screen {
     // Variable for jump logic
     private boolean gameOver = false;
 
-    // Variables for jump logic
-    private float velocityY = 0;
-
     private int currentScore;
 
     public GameScreen(BirbGame game) {
@@ -83,35 +80,12 @@ public class GameScreen implements Screen {
 
         updateState(delta);
         draw(delta);
-
-
-        // Jump logic todo move?
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            velocityY = KiwiConstants.JUMPFORCE;
-        }
-
-        velocityY += GameFunctionalityConstants.GRAVITY * delta;
-        float newY = kiwi.getY() + velocityY * delta;
-
-        float minY = 0;
-        float maxY = GameFunctionalityConstants.WORLD_HEIGHT - KiwiConstants.KIWI_HEIGHT / 2f;
-
-        if (newY < minY) {
-            newY = minY;
-            velocityY = 0;
-        } else if (newY > maxY) {
-            newY = maxY;
-            velocityY = 0;
-        }
-
-        kiwi.setY(newY);
-
         checkForGameOver();
 
     }
 
     private void updateState(float delta) {
-        kiwi.update();
+        kiwi.update(delta);
 
         secondsPassed += delta;
         if (secondsPassed > GameFunctionalityConstants.SECONDS_BETWEEN_OBSTACLES) {

@@ -40,6 +40,10 @@ public class KiwiSprite {
             sprite.getY() + sprite.getHeight() / 2f, sprite.getHeight() / 2f);
     }
 
+    /**
+     * Call every render cycle to update the kiwi's position, including logic for user input to jump.
+     * @param delta
+     */
     public void update(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             velocityY = KiwiConstants.JUMPFORCE;
@@ -96,5 +100,13 @@ public class KiwiSprite {
 
     public void setY(float y) {
         this.sprite.setY(y);
+    }
+
+    /**
+     * Get the {@Link Circle} with the same radius and position as the kiwi sprite. Suitable for collision checking.
+     * @return
+     */
+    public Circle getBodyPosition() {
+        return bodyPosition;
     }
 }

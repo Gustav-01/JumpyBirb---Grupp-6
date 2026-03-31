@@ -11,4 +11,5 @@ public class ObstacleConstants {
     public static final int OBSTACLE_SPEED = 150;
     public static final int OBSTACLE_WIDTH = 52;
     public static final int OBSTACLE_HEIGHT = 360;
+    public static final float SECONDS_BETWEEN_OBSTACLES = 3f;
 }

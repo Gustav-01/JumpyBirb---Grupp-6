@@ -6,6 +6,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Pool;
 import se.yrgo.game.constants.ObstacleConstants;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -13,10 +16,14 @@ import java.util.concurrent.ThreadLocalRandom;
  * Handles position updates, rendering, and pooling state.
  */
 public class ObstaclePair implements Pool.Poolable {
-    private Obstacle knife;
-    private Obstacle fork;
-    private Rectangle positionKnife;
-    private Rectangle positionFork;
+    private final Obstacle knife;
+    private final Obstacle fork;
+    private Rectangle positionKnifeLeft;
+    private Rectangle positionKnifeRight;
+    private Rectangle positionForkTop;
+    private Rectangle positionForkBottom;
+
+    private final List<Rectangle> obstacleCollidableShapes = new ArrayList<>();
     private boolean alive;
     private boolean isScored;
 
@@ -30,22 +37,54 @@ public class ObstaclePair implements Pool.Poolable {
         this.knife = k;
         this.fork = f;
 
-        positionKnife = new Rectangle(knife.getX(), knife.getY(), knife.getWidth(), knife.getHeight());
-        positionFork = new Rectangle(fork.getX(), fork.getY(), fork.getWidth(), fork.getHeight());
+        initCollisionShapes();
 
         alive = false;
         isScored = false;
+    }
+
+    private void initCollisionShapes() {
+        positionKnifeLeft = new Rectangle(
+            knife.getX() + 5,
+            knife.getY() + (ObstacleConstants.OBSTACLE_HEIGHT / 7f),
+            ObstacleConstants.KNIFE_SHAPE_WIDTH / 2f,
+            ObstacleConstants.OBSTACLE_HEIGHT / 3f);
+        obstacleCollidableShapes.add(positionKnifeLeft);
+
+        positionKnifeRight = new Rectangle(
+            knife.getX() + (ObstacleConstants.KNIFE_SHAPE_WIDTH / 2f),
+            knife.getY(),
+            ObstacleConstants.KNIFE_SHAPE_WIDTH / 2f,
+            knife.getHeight());
+        obstacleCollidableShapes.add(positionKnifeRight);
+
+        positionForkTop = new Rectangle(fork.getX(),
+            fork.getY() + (ObstacleConstants.OBSTACLE_HEIGHT * 0.65f),
+            fork.getWidth(),
+            fork.getHeight() - (ObstacleConstants.OBSTACLE_HEIGHT * 0.65f));
+        obstacleCollidableShapes.add(positionForkTop);
+
+        positionForkBottom = new Rectangle(fork.getX() + (ObstacleConstants.OBSTACLE_WIDTH / 3f),
+            fork.getY(),
+            ObstacleConstants.OBSTACLE_WIDTH / 4f,
+            ObstacleConstants.OBSTACLE_HEIGHT - positionForkTop.getHeight());
+        obstacleCollidableShapes.add(positionForkBottom);
+
     }
 
     public void update(float delta) {
         knife.update(delta);
         fork.update(delta);
 
-        positionKnife.setX(knife.getX());
-        positionKnife.setY(knife.getY());
+        positionKnifeLeft.setX(knife.getX() + 5);
+        positionKnifeRight.setX(knife.getX() + (ObstacleConstants.KNIFE_SHAPE_WIDTH / 2f));
+        positionKnifeLeft.setY(knife.getY() + (ObstacleConstants.OBSTACLE_HEIGHT / 7f));
+        positionKnifeRight.setY(knife.getY());
 
-        positionFork.setX(fork.getX());
-        positionFork.setY(fork.getY());
+        positionForkTop.setX(fork.getX());
+        positionForkTop.setY(fork.getY() + (ObstacleConstants.OBSTACLE_HEIGHT * 0.65f));
+        positionForkBottom.setX(fork.getX() + (ObstacleConstants.OBSTACLE_WIDTH / 3f));
+        positionForkBottom.setY(fork.getY());
 
         if (outsideScreen()) {
             alive = false;
@@ -53,7 +92,7 @@ public class ObstaclePair implements Pool.Poolable {
     }
 
     private boolean outsideScreen() {
-        return positionFork.getX() < -ObstacleConstants.OBSTACLE_WIDTH;
+        return positionForkTop.getX() < -ObstacleConstants.OBSTACLE_WIDTH;
     }
 
     public void render(SpriteBatch batch) {
@@ -92,6 +131,7 @@ public class ObstaclePair implements Pool.Poolable {
 
     /**
      * Check if kiwi have passed the obstaclePair to increase the current score
+     *
      * @param kiwiX position of the kiwi
      * @return true if kiwi is past the obstaclePair, false if not
      */
@@ -106,11 +146,24 @@ public class ObstaclePair implements Pool.Poolable {
         return false;
     }
 
-    public Rectangle getPositionFork() {
-        return positionFork;
+    public Rectangle getPositionForkTop() {
+        return positionForkTop;
     }
 
-    public Rectangle getPositionKnife() {
-        return positionKnife;
+    public Rectangle getPositionForkBottom() {
+        return positionForkBottom;
     }
+
+    public Rectangle getPositionKnifeLeft() {
+        return positionKnifeLeft;
+    }
+
+    public Rectangle getPositionKnifeRight() {
+        return positionKnifeRight;
+    }
+
+    public List<Rectangle> getObstacleCollidableShapes() {
+        return Collections.unmodifiableList(obstacleCollidableShapes);
+    }
+
 }

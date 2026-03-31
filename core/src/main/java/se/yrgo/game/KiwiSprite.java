@@ -20,6 +20,9 @@ public class KiwiSprite {
     private Circle bodyPosition;
     private Sprite sprite;
     private float velocityY = 0;
+    private int circleYPixelTweak = 26;
+    private int circleRadiusPixelTweak = 16;
+
 
     /**
      * Creates a new kiwi sprite from the given texture and dimensions.
@@ -36,8 +39,9 @@ public class KiwiSprite {
         this.sprite.setSize(kiwiWidth, kiwiHeight);
         this.sprite.setPosition(initXPos, initYPos);
 
-        bodyPosition = new Circle(sprite.getX() + sprite.getWidth() / 2f,
-            sprite.getY() + sprite.getHeight() / 2f, sprite.getHeight() / 2f);
+        bodyPosition = new Circle(initXPos + KiwiConstants.KIWI_WIDTH / 2f,
+            initYPos + KiwiConstants.KIWI_HEIGHT / 2f - circleYPixelTweak,
+            (KiwiConstants.KIWI_HEIGHT - circleRadiusPixelTweak) / 2f);
     }
 
     /**

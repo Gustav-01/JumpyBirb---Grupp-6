@@ -3,6 +3,10 @@ package se.yrgo.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Represents a single obstacle in the game.
+ * Handles position, movement, size, and rendering.
+ */
 public class Obstacle {
 
     Texture texture;
@@ -12,6 +16,16 @@ public class Obstacle {
     float width;
     float height;
 
+    /**
+     * Creates a new obstacle with a texture, position, speed, and size.
+     *
+     * @param file   path to the texture file
+     * @param x      starting x-position
+     * @param y      starting y-position
+     * @param speed  movement speed
+     * @param width  obstacle width
+     * @param height obstacle height
+     */
     public Obstacle(String file, float x, float y, float speed, float width, float height) {
         this.texture = new Texture(file);
         this.x = x;

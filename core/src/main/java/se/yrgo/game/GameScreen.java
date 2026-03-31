@@ -20,6 +20,7 @@ import se.yrgo.game.constants.ObstacleConstants;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * The main screen of the game, where the game mechanics take place.
  */
@@ -37,14 +38,16 @@ public class GameScreen implements Screen {
     private List<ObstaclePair> activeObstacles = new ArrayList<>();
     private float secondsPassed;
 
-    // Variables for jump logic
+    // Variable for jump logic
     private float velocityY = 0;
-    private final float gravity = -900f;
-    private final float jumpForce = 350f;
+
+    private int currentScore;
 
     public GameScreen(BirbGame game) {
         this.game = game;
         batch = new SpriteBatch();
+
+        currentScore = 0;
 
         kiwi = new Sprite(new Texture("Kiwi_wing_up.png"));
         kiwi.setSize(KiwiConstants.KIWI_WIDTH, KiwiConstants.KIWI_HEIGHT);
@@ -73,16 +76,24 @@ public class GameScreen implements Screen {
 
         // Jump logic
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            velocityY = jumpForce;
+            velocityY = KiwiConstants.JUMPFORCE;
         }
-        velocityY += gravity * delta;
-        float newPosition = kiwi.getY() + velocityY * delta;
-        kiwi.setY(newPosition);
 
-        if (kiwi.getY() < 0) {
-            kiwi.setY(0);
+        velocityY += GameFunctionalityConstants.GRAVITY * delta;
+        float newY = kiwi.getY() + velocityY * delta;
+
+        float minY = 0;
+        float maxY = GameFunctionalityConstants.WORLD_HEIGHT - kiwi.getHeight() / 2f;
+
+        if (newY < minY) {
+            newY = minY;
+            velocityY = 0;
+        } else if (newY > maxY) {
+            newY = maxY;
             velocityY = 0;
         }
+
+        kiwi.setY(newY);
 
     }
 
@@ -97,6 +108,11 @@ public class GameScreen implements Screen {
         List<ObstaclePair> toRemove = new ArrayList<>();
         for (ObstaclePair obs : activeObstacles) {
             obs.update(delta);
+
+            // ----- SCORE LOGIC -----
+            if (obs.isAlive() && obs.checkIfPassed(kiwi.getX())) {
+                currentScore++;
+            }
 
             if (!obs.isAlive()) {
                 toRemove.add(obs);
@@ -142,7 +158,6 @@ public class GameScreen implements Screen {
     public void show() {
         secondsPassed = 0;
         activeObstacles.clear();
-        obstaclePool.clear();
 
         kiwi.setPosition(GameFunctionalityConstants.WORLD_WIDTH / 5f, GameFunctionalityConstants.WORLD_HEIGHT / 2f);
         background.setPosition(0, 0);

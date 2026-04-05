@@ -113,4 +113,9 @@ public class ObstaclePair implements Pool.Poolable {
     public Rectangle getPositionKnife() {
         return positionKnife;
     }
+
+    public void dispose() {
+        knife.dispose();
+        fork.dispose();
+    }
 }

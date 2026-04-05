@@ -1,5 +1,7 @@
 package se.yrgo.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,8 +17,9 @@ public class GameOverScreen implements Screen {
     private BitmapFont bigFont;
     private BitmapFont smallFont;
     private SpriteBatch batch = new SpriteBatch();
+    private int currentScore;
 
-    public GameOverScreen(BirbGame game) {
+    public GameOverScreen(BirbGame game, int currentScore) {
         this.game = game;
 
         this.bigFont = new BitmapFont();
@@ -30,6 +33,9 @@ public class GameOverScreen implements Screen {
         this.smallFont.setColor(fontColor);
         this.smallFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         this.smallFont.getData().setScale(1.5f);
+
+        this.currentScore = currentScore;
+
     }
 
 
@@ -42,13 +48,39 @@ public class GameOverScreen implements Screen {
         ScreenUtils.clear(Color.GRAY);
 
         batch.begin();
+        // Game over text
         bigFont.draw(batch, "Game Over!",
             0,
             GameFunctionalityConstants.WORLD_HEIGHT / 2f,
             600,
             Align.center,
             false);
+
+        // Show score
+        smallFont.draw(batch, "Score: " + currentScore,
+            0,
+            GameFunctionalityConstants.WORLD_HEIGHT / 2f - 20,
+            600,
+            Align.center,
+            false
+        );
+
+        // Restart instruction
+        smallFont.draw(batch, "Press SPACE to restart",
+            0,
+            GameFunctionalityConstants.WORLD_HEIGHT / 2f - 80,
+            600,
+            Align.center,
+            false
+        );
+
+
         batch.end();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            game.setScreen(new GameScreen(game));
+            dispose();
+        }
     }
 
     @Override

@@ -48,28 +48,38 @@ public class GameOverScreen implements Screen {
         ScreenUtils.clear(Color.GRAY);
 
         batch.begin();
-        // Game over text
-        bigFont.draw(batch, "Game Over!",
-            0,
-            GameFunctionalityConstants.WORLD_HEIGHT / 2f,
-            600,
-            Align.center,
-            false);
 
-        // Show score
+        float worldWidth = GameFunctionalityConstants.WORLD_WIDTH;
+        float worldHeight = GameFunctionalityConstants.WORLD_HEIGHT;
+
+        float centerX = 0;
+        float width = worldWidth;
+
+        float centerY = worldHeight / 2f;
+
+        // Game Over text
+        bigFont.draw(batch, "Game Over!",
+            centerX,
+            centerY + 100,
+            width,
+            Align.center,
+            false
+        );
+
+        // Score
         smallFont.draw(batch, "Score: " + currentScore,
-            0,
-            GameFunctionalityConstants.WORLD_HEIGHT / 2f - 20,
-            600,
+            centerX,
+            centerY + 30,
+            width,
             Align.center,
             false
         );
 
         // Restart instruction
         smallFont.draw(batch, "Press SPACE to restart",
-            0,
-            GameFunctionalityConstants.WORLD_HEIGHT / 2f - 80,
-            600,
+            centerX,
+            centerY - 40,
+            width,
             Align.center,
             false
         );

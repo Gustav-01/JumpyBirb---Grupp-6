@@ -23,6 +23,12 @@ public class ObstaclePair implements Pool.Poolable {
     private Rectangle positionForkTop;
     private Rectangle positionForkBottom;
 
+    //for new try on shapes:
+    private Rectangle knifeBorderPos;
+    private Rectangle forkBorderPos;
+    private static final float knifeBorderWidthCutRate = ObstacleConstants.KNIFE_SHAPE_WIDTH / 5f;
+
+
     private final List<Rectangle> obstacleCollidableShapes = new ArrayList<>();
     private boolean alive;
     private boolean isScored;
@@ -37,7 +43,8 @@ public class ObstaclePair implements Pool.Poolable {
         this.knife = k;
         this.fork = f;
 
-        initCollisionShapes();
+//        initCollisionShapes();
+        initCollisionShapes2();
 
         alive = false;
         isScored = false;
@@ -72,19 +79,42 @@ public class ObstaclePair implements Pool.Poolable {
 
     }
 
+    private void initCollisionShapes2(){
+        knifeBorderPos = new Rectangle(
+            knife.getX() + (knifeBorderWidthCutRate * 2),
+            knife.getY(),
+            ObstacleConstants.KNIFE_SHAPE_WIDTH - (knifeBorderWidthCutRate * 2),
+            ObstacleConstants.OBSTACLE_HEIGHT
+        );
+        obstacleCollidableShapes.add(knifeBorderPos);
+
+        forkBorderPos = new Rectangle(
+            fork.getX(),
+            fork.getY(),
+            ObstacleConstants.OBSTACLE_WIDTH,
+            ObstacleConstants.OBSTACLE_HEIGHT
+        );
+        obstacleCollidableShapes.add(forkBorderPos);
+    }
+
     public void update(float delta) {
         knife.update(delta);
         fork.update(delta);
 
-        positionKnifeLeft.setX(knife.getX() + 5);
-        positionKnifeRight.setX(knife.getX() + (ObstacleConstants.KNIFE_SHAPE_WIDTH / 2f));
-        positionKnifeLeft.setY(knife.getY() + (ObstacleConstants.OBSTACLE_HEIGHT / 7f));
-        positionKnifeRight.setY(knife.getY());
+//        positionKnifeLeft.setX(knife.getX() + 5);
+//        positionKnifeRight.setX(knife.getX() + (ObstacleConstants.KNIFE_SHAPE_WIDTH / 2f));
+//        positionKnifeLeft.setY(knife.getY() + (ObstacleConstants.OBSTACLE_HEIGHT / 7f));
+//        positionKnifeRight.setY(knife.getY());
+//
+//        positionForkTop.setX(fork.getX());
+//        positionForkTop.setY(fork.getY() + (ObstacleConstants.OBSTACLE_HEIGHT * 0.65f));
+//        positionForkBottom.setX(fork.getX() + (ObstacleConstants.OBSTACLE_WIDTH / 3f));
+//        positionForkBottom.setY(fork.getY());
 
-        positionForkTop.setX(fork.getX());
-        positionForkTop.setY(fork.getY() + (ObstacleConstants.OBSTACLE_HEIGHT * 0.65f));
-        positionForkBottom.setX(fork.getX() + (ObstacleConstants.OBSTACLE_WIDTH / 3f));
-        positionForkBottom.setY(fork.getY());
+        knifeBorderPos.setX(knife.getX() + knifeBorderWidthCutRate * 2);
+        knifeBorderPos.setY(knife.getY());
+        forkBorderPos.setX(fork.getX());
+        forkBorderPos.setY(fork.getY());
 
         if (outsideScreen()) {
             alive = false;
@@ -92,7 +122,8 @@ public class ObstaclePair implements Pool.Poolable {
     }
 
     private boolean outsideScreen() {
-        return positionForkTop.getX() < -ObstacleConstants.OBSTACLE_WIDTH;
+//        return positionForkTop.getX() < -ObstacleConstants.OBSTACLE_WIDTH;
+        return fork.getX() < -ObstacleConstants.OBSTACLE_WIDTH;
     }
 
     public void render(SpriteBatch batch) {
@@ -166,4 +197,11 @@ public class ObstaclePair implements Pool.Poolable {
         return Collections.unmodifiableList(obstacleCollidableShapes);
     }
 
+    public Rectangle getKnifeBorderPos() {
+        return knifeBorderPos;
+    }
+
+    public Rectangle getForkBorderPos() {
+        return forkBorderPos;
+    }
 }

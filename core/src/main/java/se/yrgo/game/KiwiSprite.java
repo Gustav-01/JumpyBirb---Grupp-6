@@ -19,18 +19,19 @@ public class KiwiSprite {
     private Texture texture;
     private Circle bodyPosition;
     private Sprite sprite;
-    private float velocityY = 0;
+    private float velocityY = 0f;
     private int circleYPixelTweak = 26;
     private int circleRadiusPixelTweak = 16;
 
 
     /**
      * Creates a new kiwi sprite from the given texture and dimensions.
-     * @param texture texture to build the kiwi's sprite on
-     * @param kiwiWidth the total width from wing to wing
+     *
+     * @param texture    texture to build the kiwi's sprite on
+     * @param kiwiWidth  the total width from wing to wing
      * @param kiwiHeight the total height
-     * @param initXPos where on X to initially position the kiwi
-     * @param initYPos where on Y to initially position the kiwi
+     * @param initXPos   where on X to initially position the kiwi
+     * @param initYPos   where on Y to initially position the kiwi
      */
     public KiwiSprite(Texture texture, float kiwiWidth, float kiwiHeight, float initXPos, float initYPos) {
         this.texture = texture;
@@ -48,12 +49,15 @@ public class KiwiSprite {
      * Call every render cycle to update the kiwi's position, including logic for user input to jump.
      * @param delta
      */
+
     public void update(float delta) {
+        // jump
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             velocityY = KiwiConstants.JUMPFORCE;
         }
-
+        // gravity
         velocityY += GameFunctionalityConstants.GRAVITY * delta;
+
         float newY = sprite.getY() + velocityY * delta;
 
         float minY = 0;
@@ -71,10 +75,12 @@ public class KiwiSprite {
 
         bodyPosition.setY(sprite.getY() + sprite.getHeight() / 2f);
         bodyPosition.setX(sprite.getX() + sprite.getWidth() / 2f);
+
     }
 
     /**
      * Draw the kiwi to the given {@link SpriteBatch}.
+     *
      * @param batch
      */
     public void draw(SpriteBatch batch) {
@@ -83,6 +89,7 @@ public class KiwiSprite {
 
     /**
      * Checks to see if the kiwi overlaps with a {@link Rectangle} shape. Use for collision detection.
+     *
      * @param rectangle the shape to check if it overlaps with the kiwi
      * @return true if it overlaps, otherwise false.
      */
@@ -104,6 +111,10 @@ public class KiwiSprite {
 
     public void setY(float y) {
         this.sprite.setY(y);
+    }
+
+    public void dispose() {
+        texture.dispose();
     }
 
     /**

@@ -66,4 +66,8 @@ public class Obstacle {
     public void setY(float y) {
         this.y = y;
     }
+
+    public void dispose() {
+        texture.dispose();
+    }
 }

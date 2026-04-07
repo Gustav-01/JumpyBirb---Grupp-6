@@ -40,7 +40,9 @@ public class GameScreen implements Screen {
     private List<ObstaclePair> activeObstacles = new ArrayList<>();
 
     private float secondsPassed;
+
     private boolean gameOver = false;
+
     private int currentScore;
 
     public GameScreen(BirbGame game) {
@@ -74,16 +76,22 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         if (gameOver) {
-            game.gameOver();
+            game.gameOver(currentScore);
             return;
         }
 
         updateState(delta);
         draw(delta);
+
         checkForGameOver();
 
     }
 
+    /**
+     * Provides the logic of the jump movement of the kiwi
+     *
+     * @param delta
+     */
     private void updateState(float delta) {
         kiwi.update(delta);
 
@@ -117,7 +125,6 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.GRAY);
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
-
 
         batch.begin();
         background.draw(batch);
@@ -166,11 +173,19 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Checks whether the kiwi has collided with any active obstacle.
+     * If a collision is detected, the current GameScreen is disposed
+     * and a new GameOverScreen is created.
+     */
     private void checkForGameOver() {
         for (ObstaclePair obstacle : activeObstacles) {
             for (Rectangle shape : obstacle.getObstacleCollidableShapes()) {
                 if (kiwi.overlaps(shape)) {
                     gameOver = true;
+                    game.setScreen(new GameOverScreen(game, currentScore));
+                    dispose();
+                    return;
                 }
             }
         }
@@ -250,6 +265,14 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        batch.dispose();
+        kiwi.dispose();
+        background.getTexture().dispose();
+
+        // Dispose all active obstacles
+        for (ObstaclePair obs : activeObstacles) {
+            obs.dispose();
+        }
 
     }
 }

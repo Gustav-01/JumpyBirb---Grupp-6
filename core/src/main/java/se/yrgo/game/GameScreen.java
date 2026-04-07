@@ -41,8 +41,6 @@ public class GameScreen implements Screen {
 
     private float secondsPassed;
 
-    private boolean gameOver = false;
-
     private int currentScore;
 
     public GameScreen(BirbGame game) {
@@ -75,11 +73,6 @@ public class GameScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        if (gameOver) {
-            game.gameOver(currentScore);
-            return;
-        }
-
         updateState(delta);
         draw(delta);
 
@@ -182,7 +175,6 @@ public class GameScreen implements Screen {
         for (ObstaclePair obstacle : activeObstacles) {
             for (Rectangle shape : obstacle.getObstacleCollidableShapes()) {
                 if (kiwi.overlaps(shape)) {
-                    gameOver = true;
                     game.setScreen(new GameOverScreen(game, currentScore));
                     dispose();
                     return;

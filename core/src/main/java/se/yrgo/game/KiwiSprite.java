@@ -47,6 +47,7 @@ public class KiwiSprite {
 
     /**
      * Call every render cycle to update the kiwi's position, including logic for user input to jump.
+     *
      * @param delta
      */
 
@@ -119,6 +120,7 @@ public class KiwiSprite {
 
     /**
      * Get the {@Link Circle} with the same radius and position as the kiwi sprite. Suitable for collision checking.
+     *
      * @return
      */
     public Circle getBodyPosition() {

@@ -38,7 +38,6 @@ public class GameScreen implements Screen {
     private List<ObstaclePair> activeObstacles = new ArrayList<>();
     private float secondsPassed;
 
-    // Variable for jump logic
     private boolean gameOver = false;
 
     // Variables for jump logic
@@ -77,41 +76,24 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         if (gameOver) {
-            game.gameOver();
+            game.gameOver(currentScore);
             return;
         }
 
         updateState(delta);
         draw(delta);
 
-
-        // Jump logic todo move?
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            velocityY = KiwiConstants.JUMPFORCE;
-        }
-
-        velocityY += GameFunctionalityConstants.GRAVITY * delta;
-        float newY = kiwi.getY() + velocityY * delta;
-
-        float minY = 0;
-        float maxY = GameFunctionalityConstants.WORLD_HEIGHT - KiwiConstants.KIWI_HEIGHT / 2f;
-
-        if (newY < minY) {
-            newY = minY;
-            velocityY = 0;
-        } else if (newY > maxY) {
-            newY = maxY;
-            velocityY = 0;
-        }
-
-        kiwi.setY(newY);
-
         checkForGameOver();
 
     }
 
+    /**
+     * Provides the logic of the jump movement of the kiwi
+     *
+     * @param delta
+     */
     private void updateState(float delta) {
-        kiwi.update();
+        kiwi.update(delta);
 
         secondsPassed += delta;
         if (secondsPassed > GameFunctionalityConstants.SECONDS_BETWEEN_OBSTACLES) {
@@ -155,11 +137,20 @@ public class GameScreen implements Screen {
         batch.end();
     }
 
+    /**
+     * Checks whether the kiwi has collided with any active obstacle.
+     * If a collision is detected, the current GameScreen is disposed
+     * and a new GameOverScreen is created.
+     */
     private void checkForGameOver() {
         for (ObstaclePair obstacle : activeObstacles) {
             if (kiwi.overlaps(obstacle.getPositionFork()) ||
                 kiwi.overlaps(obstacle.getPositionKnife())) {
-                gameOver = true;
+
+//                gameOver = true;
+                game.setScreen(new GameOverScreen(game, currentScore));
+                dispose();
+                return;
             }
         }
     }
@@ -238,6 +229,14 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        batch.dispose();
+        kiwi.dispose();
+        background.getTexture().dispose();
+
+        // Dispose all active obstacles
+        for (ObstaclePair obs : activeObstacles) {
+            obs.dispose();
+        }
 
     }
 }

@@ -18,13 +18,12 @@ public class BirbGame extends Game {
     @Override
     public void create() {
         gameScreen = new GameScreen(this);
-        gameOverScreen = new GameOverScreen(this);
         setScreen(gameScreen);
     }
 
-    public void gameOver(){
+    public void gameOver(int score){
+        gameOverScreen = new GameOverScreen(this, score);
         setScreen(gameOverScreen);
-        //todo dispose GameScreen??
         gameScreen.dispose();
     }
 }

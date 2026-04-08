@@ -46,6 +46,8 @@ public class GameScreen implements Screen {
     private int currentScore;
     private BitmapFont font;
 
+    private float currentObstacleSpeed;
+
     public GameScreen(BirbGame game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -57,6 +59,7 @@ public class GameScreen implements Screen {
             GameFunctionalityConstants.WORLD_WIDTH / 5f,
             GameFunctionalityConstants.WORLD_HEIGHT / 2f
         );
+
         currentScore = 0;
         font = new BitmapFont();
         font.getData().setScale(2);
@@ -68,6 +71,7 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         viewport = new FitViewport(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, camera);
 
+        currentObstacleSpeed = ObstacleConstants.OBSTACLE_SPEED;
     }
 
     /**
@@ -94,10 +98,13 @@ public class GameScreen implements Screen {
         kiwi.update(delta);
 
         secondsPassed += delta;
-        if (secondsPassed > ObstacleConstants.SECONDS_BETWEEN_OBSTACLES) {
+        float spawnInterval = ObstacleConstants.OBSTACLE_DISTANCE / currentObstacleSpeed;
+        if (secondsPassed > spawnInterval) {
             spawnObstacle();
             secondsPassed = 0;
         }
+
+        currentObstacleSpeed += 5f * delta;
 
         List<ObstaclePair> toRemove = new ArrayList<>();
         for (ObstaclePair obs : activeObstacles) {
@@ -207,7 +214,7 @@ public class GameScreen implements Screen {
 
     private void spawnObstacle() {
         var obstacle = obstaclePool.obtain();
-        obstacle.init();
+        obstacle.init(currentObstacleSpeed);
         activeObstacles.add(obstacle);
     }
 
@@ -219,7 +226,6 @@ public class GameScreen implements Screen {
                 var fork = new Obstacle("ForkSprite.png",
                     GameFunctionalityConstants.WORLD_WIDTH,
                     0,
-                    ObstacleConstants.OBSTACLE_SPEED,
                     ObstacleConstants.OBSTACLE_WIDTH,
                     ObstacleConstants.OBSTACLE_HEIGHT
                 );
@@ -227,7 +233,6 @@ public class GameScreen implements Screen {
                     "KnifeSprite.png",
                     GameFunctionalityConstants.WORLD_WIDTH,
                     ObstacleConstants.OBSTACLE_HEIGHT + ObstacleConstants.OBSTACLE_GAP,
-                    ObstacleConstants.OBSTACLE_SPEED,
                     ObstacleConstants.OBSTACLE_WIDTH,
                     ObstacleConstants.OBSTACLE_HEIGHT
                 );

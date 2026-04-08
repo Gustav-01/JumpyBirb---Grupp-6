@@ -37,7 +37,17 @@ public class BirbScoreDao implements ScoreDao{
     }
 
     @Override
-    public int getScore() {
-        return 0;
+    public int getHighscore() {
+        try (PreparedStatement ps = connection.prepareStatement(SqlConstants.SELECT_HIGHEST_SCORE)) {
+            var res = ps.executeQuery();
+            return res.getInt(SqlConstants.FLD_SCORE);
+        } catch (SQLException e) {
+            throw new RuntimeException("There was an error when attempting to retrieve a highscore.", e);
+        }
+    }
+
+    @Override
+    public void close() {
+        gameDatabase.close();
     }
 }

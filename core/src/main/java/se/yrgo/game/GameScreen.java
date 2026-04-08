@@ -172,9 +172,7 @@ public class GameScreen implements Screen {
         for (ObstaclePair obstacle : activeObstacles) {
             for (Rectangle shape : obstacle.getObstacleCollidableShapes()) {
                 if (kiwi.overlaps(shape)) {
-                    game.setScreen(new GameOverScreen(game, currentScore));
-                    dispose();
-                    return;
+                    game.gameOver(currentScore);
                 }
             }
         }

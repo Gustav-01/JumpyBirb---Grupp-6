@@ -74,6 +74,13 @@ public class GameOverScreen implements Screen {
             Align.center,
             false
         );
+        smallFont.draw(batch, "Personal best: " + game.getPreviousHighscore(),
+            centerX,
+            centerY + 60,
+            width,
+            Align.center,
+            false
+        );
 
         // Restart instruction
         smallFont.draw(batch, "Press SPACE to restart",

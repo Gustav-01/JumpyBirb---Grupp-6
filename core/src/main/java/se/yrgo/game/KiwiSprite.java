@@ -20,6 +20,9 @@ public class KiwiSprite {
     private Circle bodyPosition;
     private Sprite sprite;
     private float velocityY = 0f;
+    private int circleYPixelTweak = 26;
+    private int circleRadiusPixelTweak = 16;
+
 
     /**
      * Creates a new kiwi sprite from the given texture and dimensions.
@@ -37,9 +40,16 @@ public class KiwiSprite {
         this.sprite.setSize(kiwiWidth, kiwiHeight);
         this.sprite.setPosition(initXPos, initYPos);
 
-        bodyPosition = new Circle(sprite.getX() + sprite.getWidth() / 2f,
-            sprite.getY() + sprite.getHeight() / 2f, sprite.getHeight() / 2f);
+        bodyPosition = new Circle(initXPos + KiwiConstants.KIWI_WIDTH / 2f,
+            initYPos + KiwiConstants.KIWI_HEIGHT / 2f - circleYPixelTweak,
+            (KiwiConstants.KIWI_HEIGHT - circleRadiusPixelTweak) / 2f);
     }
+
+    /**
+     * Call every render cycle to update the kiwi's position, including logic for user input to jump.
+     *
+     * @param delta
+     */
 
     public void update(float delta) {
         // jump
@@ -106,5 +116,14 @@ public class KiwiSprite {
 
     public void dispose() {
         texture.dispose();
+    }
+
+    /**
+     * Get the {@Link Circle} with the same radius and position as the kiwi sprite. Suitable for collision checking.
+     *
+     * @return
+     */
+    public Circle getBodyPosition() {
+        return bodyPosition;
     }
 }

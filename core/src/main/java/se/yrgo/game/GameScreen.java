@@ -1,7 +1,5 @@
 package se.yrgo.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -9,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -25,6 +25,8 @@ import java.util.List;
  * The main screen of the game, where the game mechanics take place.
  */
 public class GameScreen implements Screen {
+    private final boolean inDebugMode = false; //For debug purposes
+    ShapeRenderer shapeRenderer = new ShapeRenderer(); //For debug purposes
 
     private final BirbGame game;
     private SpriteBatch batch;
@@ -36,12 +38,8 @@ public class GameScreen implements Screen {
 
     private Pool<ObstaclePair> obstaclePool;
     private List<ObstaclePair> activeObstacles = new ArrayList<>();
+
     private float secondsPassed;
-
-    private boolean gameOver = false;
-
-    // Variables for jump logic
-    private float velocityY = 0;
 
     private int currentScore;
 
@@ -75,11 +73,6 @@ public class GameScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        if (gameOver) {
-            game.gameOver(currentScore);
-            return;
-        }
-
         updateState(delta);
         draw(delta);
 
@@ -96,7 +89,7 @@ public class GameScreen implements Screen {
         kiwi.update(delta);
 
         secondsPassed += delta;
-        if (secondsPassed > GameFunctionalityConstants.SECONDS_BETWEEN_OBSTACLES) {
+        if (secondsPassed > ObstacleConstants.SECONDS_BETWEEN_OBSTACLES) {
             spawnObstacle();
             secondsPassed = 0;
         }
@@ -135,6 +128,42 @@ public class GameScreen implements Screen {
         }
 
         batch.end();
+
+        //For debugging. May be deleted later
+        drawShapesOutlinesDebug();
+    }
+
+    /**
+     * For drawing out the shapes making up the sprites, to check positions. Use for debugging collision control.
+     */
+    private void drawShapesOutlinesDebug() {
+        if (inDebugMode) {
+            shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.BLUE);
+            shapeRenderer.circle(kiwi.getBodyPosition().x, kiwi.getBodyPosition().y, kiwi.getBodyPosition().radius);
+
+            for (ObstaclePair obs : activeObstacles) {
+                //Paint detailed version
+
+//                shapeRenderer.rect(obs.getPositionForkTop().getX(), obs.getPositionForkTop().getY(),
+//                    obs.getPositionForkTop().width, obs.getPositionForkTop().getHeight());
+//                shapeRenderer.rect(obs.getPositionForkBottom().getX(), obs.getPositionForkBottom().getY(),
+//                    obs.getPositionForkBottom().width, obs.getPositionForkBottom().getHeight());
+//                shapeRenderer.rect(obs.getPositionKnifeLeft().getX(), obs.getPositionKnifeLeft().getY(),
+//                    obs.getPositionKnifeLeft().width, obs.getPositionKnifeLeft().getHeight());
+//                shapeRenderer.rect(obs.getPositionKnifeRight().getX(), obs.getPositionKnifeRight().getY(),
+//                    obs.getPositionKnifeRight().width, obs.getPositionKnifeRight().getHeight());
+
+                //Paint rough version
+
+                shapeRenderer.rect(obs.getKnifeBorderPos().getX(), obs.getKnifeBorderPos().getY(),
+                    obs.getKnifeBorderPos().getWidth(), obs.getKnifeBorderPos().getHeight());
+                shapeRenderer.rect(obs.getForkBorderPos().getX(), obs.getForkBorderPos().getY(),
+                    obs.getForkBorderPos().getWidth(), obs.getForkBorderPos().getHeight());
+            }
+            shapeRenderer.end();
+        }
     }
 
     /**
@@ -144,13 +173,12 @@ public class GameScreen implements Screen {
      */
     private void checkForGameOver() {
         for (ObstaclePair obstacle : activeObstacles) {
-            if (kiwi.overlaps(obstacle.getPositionFork()) ||
-                kiwi.overlaps(obstacle.getPositionKnife())) {
-
-//                gameOver = true;
-                game.setScreen(new GameOverScreen(game, currentScore));
-                dispose();
-                return;
+            for (Rectangle shape : obstacle.getObstacleCollidableShapes()) {
+                if (kiwi.overlaps(shape)) {
+                    game.setScreen(new GameOverScreen(game, currentScore));
+                    dispose();
+                    return;
+                }
             }
         }
     }

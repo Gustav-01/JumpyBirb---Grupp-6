@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import se.yrgo.game.constants.GameFunctionalityConstants;
 import se.yrgo.game.constants.KiwiConstants;
 import se.yrgo.game.constants.ObstacleConstants;
@@ -42,6 +44,7 @@ public class GameScreen implements Screen {
     private float secondsPassed;
 
     private int currentScore;
+    private BitmapFont font;
 
     public GameScreen(BirbGame game) {
         this.game = game;
@@ -55,6 +58,8 @@ public class GameScreen implements Screen {
             GameFunctionalityConstants.WORLD_HEIGHT / 2f
         );
         currentScore = 0;
+        font = new BitmapFont();
+        font.getData().setScale(2);
 
         // Background
         background = new Sprite(new Texture("background.png"));
@@ -126,6 +131,11 @@ public class GameScreen implements Screen {
         for (ObstaclePair obs : activeObstacles) {
             obs.render(batch);
         }
+
+        //score counting, standard sizing 15px(?)
+        GlyphLayout layout = new GlyphLayout(font, "Score: "  + currentScore);
+        font.draw(batch,layout,(GameFunctionalityConstants.WORLD_WIDTH - layout.width) / 2,
+            GameFunctionalityConstants.WORLD_HEIGHT - 20);
 
         batch.end();
 
@@ -260,6 +270,7 @@ public class GameScreen implements Screen {
         batch.dispose();
         kiwi.dispose();
         background.getTexture().dispose();
+        font.dispose();
 
         // Dispose all active obstacles
         for (ObstaclePair obs : activeObstacles) {

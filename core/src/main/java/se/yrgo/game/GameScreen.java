@@ -154,19 +154,6 @@ public class GameScreen implements Screen {
             shapeRenderer.circle(kiwi.getBodyPosition().x, kiwi.getBodyPosition().y, kiwi.getBodyPosition().radius);
 
             for (ObstaclePair obs : activeObstacles) {
-                //Paint detailed version
-
-//                shapeRenderer.rect(obs.getPositionForkTop().getX(), obs.getPositionForkTop().getY(),
-//                    obs.getPositionForkTop().width, obs.getPositionForkTop().getHeight());
-//                shapeRenderer.rect(obs.getPositionForkBottom().getX(), obs.getPositionForkBottom().getY(),
-//                    obs.getPositionForkBottom().width, obs.getPositionForkBottom().getHeight());
-//                shapeRenderer.rect(obs.getPositionKnifeLeft().getX(), obs.getPositionKnifeLeft().getY(),
-//                    obs.getPositionKnifeLeft().width, obs.getPositionKnifeLeft().getHeight());
-//                shapeRenderer.rect(obs.getPositionKnifeRight().getX(), obs.getPositionKnifeRight().getY(),
-//                    obs.getPositionKnifeRight().width, obs.getPositionKnifeRight().getHeight());
-
-                //Paint rough version
-
                 shapeRenderer.rect(obs.getKnifeBorderPos().getX(), obs.getKnifeBorderPos().getY(),
                     obs.getKnifeBorderPos().getWidth(), obs.getKnifeBorderPos().getHeight());
                 shapeRenderer.rect(obs.getForkBorderPos().getX(), obs.getForkBorderPos().getY(),

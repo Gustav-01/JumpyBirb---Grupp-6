@@ -133,7 +133,8 @@ public class GameScreen implements Screen {
         }
 
         //score counting, standard sizing 15px(?)
-        GlyphLayout layout = new GlyphLayout(font, "Score: "  + currentScore);
+        GlyphLayout layout = new GlyphLayout(font, String.format("""
+            Score: %d   (Personal best: %d)""", currentScore, game.getPreviousHighscore()));
         font.draw(batch,layout,(GameFunctionalityConstants.WORLD_WIDTH - layout.width) / 2,
             GameFunctionalityConstants.WORLD_HEIGHT - 20);
 

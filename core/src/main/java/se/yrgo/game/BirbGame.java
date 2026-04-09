@@ -1,7 +1,6 @@
 package se.yrgo.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 
 /**
@@ -26,12 +25,8 @@ public class BirbGame extends Game {
         setScreen(gameScreen);
     }
 
-    public void gameOver(int score){
-        gameOverScreen = new GameOverScreen(this, score);
-        setScreen(gameOverScreen);
+    public void saveScore(int score) {
         highscoreService.registerFinalScore(score);
-
-        gameScreen.dispose();
     }
 
     @Override
@@ -42,5 +37,9 @@ public class BirbGame extends Game {
 
     public int getPreviousHighscore() {
         return previousHighscore;
+    }
+
+    public void resetPreviousHighscore() {
+        previousHighscore = highscoreService.getPreviousHighscore();
     }
 }

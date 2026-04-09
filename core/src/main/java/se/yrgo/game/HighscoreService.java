@@ -1,23 +1,40 @@
 package se.yrgo.game;
 
+import se.yrgo.game.data.BirbScoreDao;
 import se.yrgo.game.data.ScoreDao;
 
 public class HighscoreService {
     private ScoreDao scoreDao;
 
-    public void registerFinalScore(int score) {
-        storeHighscore(score);
+    public HighscoreService() {
+        this.scoreDao = new BirbScoreDao();
     }
 
-    public void storeHighscore(int score) {
-        try {
-            scoreDao.saveScore(score);
-        } catch (RuntimeException e) {
-            System.err.println(e.getMessage());
+    public boolean registerFinalScore(int score) {
+        if (isNewHighscore(score)) {
+            try {
+                scoreDao.saveScore(score);
+                return true;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
+        return false;
     }
 
-    public int getPreviousHighscore()  {
+    private boolean isNewHighscore(int score) {
+        return getPreviousHighscore() < score;
+    }
+
+//    private boolean storeHighscore(int score) {
+//        try {
+//            ;
+//        } catch (RuntimeException e) {
+//            System.err.println(e.getMessage());
+//        }
+//    }
+
+    public int getPreviousHighscore() {
         try {
             return scoreDao.getHighscore();
         } catch (RuntimeException e) {

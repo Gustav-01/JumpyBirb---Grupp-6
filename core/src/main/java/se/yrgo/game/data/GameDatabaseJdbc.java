@@ -5,7 +5,7 @@ import se.yrgo.game.data.sql.SqlConstants;
 import java.sql.*;
 
 public class GameDatabaseJdbc implements GameDatabase {
-    private static final String CONNECTION_STRING = "jdbc:sqlite:data/scores.db";
+    private static final String CONNECTION_STRING = "jdbc:sqlite:scores.db";
 
     private Connection connection;
 

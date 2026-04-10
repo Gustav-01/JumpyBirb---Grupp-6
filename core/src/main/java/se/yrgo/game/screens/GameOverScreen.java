@@ -1,4 +1,4 @@
-package se.yrgo.game;
+package se.yrgo.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import se.yrgo.game.BirbGame;
 import se.yrgo.game.constants.GameFunctionalityConstants;
 
 public class GameOverScreen implements Screen {

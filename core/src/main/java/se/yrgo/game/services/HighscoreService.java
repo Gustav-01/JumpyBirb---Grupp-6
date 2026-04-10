@@ -1,4 +1,4 @@
-package se.yrgo.game;
+package se.yrgo.game.services;
 
 import se.yrgo.game.data.BirbScoreDao;
 import se.yrgo.game.data.ScoreDao;

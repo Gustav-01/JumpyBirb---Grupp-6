@@ -1,4 +1,4 @@
-package se.yrgo.game;
+package se.yrgo.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

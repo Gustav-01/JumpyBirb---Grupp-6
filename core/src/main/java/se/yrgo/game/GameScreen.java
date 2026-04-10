@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.audio.Music;
 import se.yrgo.game.constants.GameFunctionalityConstants;
 import se.yrgo.game.constants.KiwiConstants;
 import se.yrgo.game.constants.ObstacleConstants;
@@ -36,6 +37,8 @@ public class GameScreen implements Screen {
     private KiwiSprite kiwi;
     private Sprite background;
 
+    private Music backgroundMusic;
+
     private Viewport viewport;
     private Camera camera;
 
@@ -48,6 +51,8 @@ public class GameScreen implements Screen {
     private int currentScore;
     private BitmapFont font;
 
+    private float currentObstacleSpeed;
+
     public GameScreen(BirbGame game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -59,9 +64,15 @@ public class GameScreen implements Screen {
             GameFunctionalityConstants.WORLD_WIDTH / 5f,
             GameFunctionalityConstants.WORLD_HEIGHT / 2f
         );
+
         currentScore = 0;
         font = new BitmapFont();
         font.getData().setScale(2);
+
+        //Background Music
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("BirbEasy.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.5f); //1.f = full volume
 
         // Background
         background = new Sprite(new Texture("background.png"));
@@ -70,6 +81,7 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         viewport = new FitViewport(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, camera);
 
+        currentObstacleSpeed = ObstacleConstants.OBSTACLE_SPEED;
     }
 
     /**
@@ -100,10 +112,13 @@ public class GameScreen implements Screen {
             return;
         }
         secondsPassed += delta;
-        if (secondsPassed > ObstacleConstants.SECONDS_BETWEEN_OBSTACLES) {
+        float spawnInterval = ObstacleConstants.OBSTACLE_DISTANCE / currentObstacleSpeed;
+        if (secondsPassed > spawnInterval) {
             spawnObstacle();
             secondsPassed = 0;
         }
+
+        currentObstacleSpeed += 5f * delta;
 
         List<ObstaclePair> toRemove = new ArrayList<>();
         for (ObstaclePair obs : activeObstacles) {
@@ -183,6 +198,7 @@ public class GameScreen implements Screen {
                     game.setScreen(new GameOverScreen(game, currentScore));
                     dispose();
                     game.saveScore(currentScore);
+                    backgroundMusic.stop();
                     return;
                 }
             }
@@ -212,12 +228,14 @@ public class GameScreen implements Screen {
         initPool();
 
         spawnObstacle();
+
+        backgroundMusic.play();
     }
 
     private void spawnObstacle() {
         var obstacle = obstaclePool.obtain();
         obstacle.reset();
-        obstacle.init();
+        obstacle.init(currentObstacleSpeed);
         activeObstacles.add(obstacle);
     }
 
@@ -229,7 +247,6 @@ public class GameScreen implements Screen {
                 var fork = new Obstacle("ForkSprite.png",
                     GameFunctionalityConstants.WORLD_WIDTH,
                     0,
-                    ObstacleConstants.OBSTACLE_SPEED,
                     ObstacleConstants.OBSTACLE_WIDTH,
                     ObstacleConstants.OBSTACLE_HEIGHT
                 );
@@ -237,7 +254,6 @@ public class GameScreen implements Screen {
                     "KnifeSprite.png",
                     GameFunctionalityConstants.WORLD_WIDTH,
                     ObstacleConstants.OBSTACLE_HEIGHT + ObstacleConstants.OBSTACLE_GAP,
-                    ObstacleConstants.OBSTACLE_SPEED,
                     ObstacleConstants.OBSTACLE_WIDTH,
                     ObstacleConstants.OBSTACLE_HEIGHT
                 );
@@ -269,6 +285,7 @@ public class GameScreen implements Screen {
         kiwi.dispose();
         background.getTexture().dispose();
         font.dispose();
+        backgroundMusic.dispose();
 
         // Dispose all active obstacles
         for (ObstaclePair obs : activeObstacles) {

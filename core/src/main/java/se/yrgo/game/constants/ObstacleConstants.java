@@ -13,5 +13,5 @@ public class ObstacleConstants {
 
     public static final int OBSTACLE_GAP = 170;
     public static final int OBSTACLE_SPEED = 150;
-    public static final float SECONDS_BETWEEN_OBSTACLES = 3f;
+    public static final float OBSTACLE_DISTANCE = 500f;
 }

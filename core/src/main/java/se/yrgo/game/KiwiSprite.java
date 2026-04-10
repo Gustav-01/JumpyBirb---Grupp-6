@@ -53,7 +53,7 @@ public class KiwiSprite {
 
     public void update(float delta) {
         // jump
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             velocityY = KiwiConstants.JUMPFORCE;
         }
         // gravity

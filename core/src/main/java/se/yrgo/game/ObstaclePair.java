@@ -100,10 +100,13 @@ public class ObstaclePair implements Pool.Poolable {
         knife.setX(GameFunctionalityConstants.WORLD_WIDTH);
     }
 
-    public void init() {
+    public void init(float speed) {
         float y = randomizeYPosition();
         fork.setY(y);
         knife.setY(y + ObstacleConstants.OBSTACLE_GAP + ObstacleConstants.OBSTACLE_HEIGHT);
+
+        fork.setSpeed(speed);
+        knife.setSpeed(speed);
 
         alive = true;
     }

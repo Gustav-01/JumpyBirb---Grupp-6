@@ -1,5 +1,6 @@
 package se.yrgo.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.audio.Music;
 import se.yrgo.game.constants.GameFunctionalityConstants;
 import se.yrgo.game.constants.KiwiConstants;
 import se.yrgo.game.constants.ObstacleConstants;
@@ -34,6 +36,8 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private KiwiSprite kiwi;
     private Sprite background;
+
+    private Music backgroundMusic;
 
     private Viewport viewport;
     private Camera camera;
@@ -60,6 +64,11 @@ public class GameScreen implements Screen {
         currentScore = 0;
         font = new BitmapFont();
         font.getData().setScale(2);
+
+        //Background Music
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("BirbEasy.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.5f); //1.f = full volume
 
         // Background
         background = new Sprite(new Texture("background.png"));
@@ -174,6 +183,7 @@ public class GameScreen implements Screen {
                 if (kiwi.overlaps(shape)) {
                     game.setScreen(new GameOverScreen(game, currentScore));
                     dispose();
+                    backgroundMusic.stop();
                     return;
                 }
             }
@@ -203,6 +213,8 @@ public class GameScreen implements Screen {
         initPool();
 
         spawnObstacle();
+
+        backgroundMusic.play();
     }
 
     private void spawnObstacle() {
@@ -258,6 +270,7 @@ public class GameScreen implements Screen {
         kiwi.dispose();
         background.getTexture().dispose();
         font.dispose();
+        backgroundMusic.dispose();
 
         // Dispose all active obstacles
         for (ObstaclePair obs : activeObstacles) {

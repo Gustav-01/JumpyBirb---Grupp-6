@@ -22,15 +22,13 @@ public class Obstacle {
      * @param file   path to the texture file
      * @param x      starting x-position
      * @param y      starting y-position
-     * @param speed  movement speed
      * @param width  obstacle width
      * @param height obstacle height
      */
-    public Obstacle(String file, float x, float y, float speed, float width, float height) {
+    public Obstacle(String file, float x, float y, float width, float height) {
         this.texture = new Texture(file);
         this.x = x;
         this.y = y;
-        this.speed = speed;
         this.width = width;
         this.height = height;
     }
@@ -70,4 +68,9 @@ public class Obstacle {
     public void dispose() {
         texture.dispose();
     }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
 }

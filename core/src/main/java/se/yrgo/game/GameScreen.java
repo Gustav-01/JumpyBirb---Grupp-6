@@ -1,5 +1,6 @@
 package se.yrgo.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -42,6 +43,7 @@ public class GameScreen implements Screen {
     private List<ObstaclePair> activeObstacles = new ArrayList<>();
 
     private float secondsPassed;
+    private boolean hasPaused = false;
 
     private int currentScore;
     private BitmapFont font;
@@ -93,6 +95,10 @@ public class GameScreen implements Screen {
     private void updateState(float delta) {
         kiwi.update(delta);
 
+        if (hasPaused) {
+            hasPaused = false;
+            return;
+        }
         secondsPassed += delta;
         if (secondsPassed > ObstacleConstants.SECONDS_BETWEEN_OBSTACLES) {
             spawnObstacle();
@@ -111,6 +117,7 @@ public class GameScreen implements Screen {
             if (!obs.isAlive()) {
                 toRemove.add(obs);
                 obstaclePool.free(obs);
+                obs.reset();
             }
         }
         activeObstacles.removeAll(toRemove);
@@ -135,7 +142,7 @@ public class GameScreen implements Screen {
         //score counting, standard sizing 15px(?)
         GlyphLayout layout = new GlyphLayout(font, String.format("""
             Score: %d   (Personal best: %d)""", currentScore, game.getPreviousHighscore()));
-        font.draw(batch,layout,(GameFunctionalityConstants.WORLD_WIDTH - layout.width) / 2,
+        font.draw(batch, layout, (GameFunctionalityConstants.WORLD_WIDTH - layout.width) / 2,
             GameFunctionalityConstants.WORLD_HEIGHT - 20);
 
         batch.end();
@@ -209,6 +216,7 @@ public class GameScreen implements Screen {
 
     private void spawnObstacle() {
         var obstacle = obstaclePool.obtain();
+        obstacle.reset();
         obstacle.init();
         activeObstacles.add(obstacle);
     }
@@ -252,6 +260,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resume() {
+        hasPaused = true;
     }
 
     @Override

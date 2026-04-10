@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Pool;
+import se.yrgo.game.constants.GameFunctionalityConstants;
 import se.yrgo.game.constants.ObstacleConstants;
 
 import java.util.ArrayList;
@@ -94,10 +95,9 @@ public class ObstaclePair implements Pool.Poolable {
         alive = false;
         isScored = false;
 
-        int screenWidth = Gdx.graphics.getWidth();
 
-        fork.setX(screenWidth);
-        knife.setX(screenWidth);
+        fork.setX(GameFunctionalityConstants.WORLD_WIDTH);
+        knife.setX(GameFunctionalityConstants.WORLD_WIDTH);
     }
 
     public void init() {

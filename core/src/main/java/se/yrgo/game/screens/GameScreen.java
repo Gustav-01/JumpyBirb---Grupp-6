@@ -1,4 +1,4 @@
-package se.yrgo.game;
+package se.yrgo.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -17,6 +17,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.audio.Music;
+import se.yrgo.game.BirbGame;
+import se.yrgo.game.sprites.KiwiSprite;
+import se.yrgo.game.sprites.Obstacle;
+import se.yrgo.game.sprites.ObstaclePair;
 import se.yrgo.game.constants.GameFunctionalityConstants;
 import se.yrgo.game.constants.KiwiConstants;
 import se.yrgo.game.constants.ObstacleConstants;

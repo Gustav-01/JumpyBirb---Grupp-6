@@ -63,6 +63,7 @@ public class GameScreen implements Screen {
 
         kiwi = new KiwiSprite(
             new Texture("Kiwi_wing_up.png"),
+            new Texture("Kiwi_Wing_down.png"),
             KiwiConstants.KIWI_WIDTH,
             KiwiConstants.KIWI_HEIGHT,
             GameFunctionalityConstants.WORLD_WIDTH / 5f,

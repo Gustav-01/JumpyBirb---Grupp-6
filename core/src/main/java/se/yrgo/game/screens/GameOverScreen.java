@@ -20,11 +20,11 @@ import se.yrgo.game.constants.GameFunctionalityConstants;
 public class GameOverScreen implements Screen {
     private BirbGame game;
 
-    private BitmapFont bigFont;
-    private BitmapFont smallFont;
     private SpriteBatch batch = new SpriteBatch();
     private int currentScore;
 
+    private BitmapFont customFont;
+    private BitmapFont smallCustomFont;
     private Sprite background;
 
     private Viewport viewport;
@@ -35,23 +35,18 @@ public class GameOverScreen implements Screen {
     public GameOverScreen(BirbGame game, int currentScore) {
         this.game = game;
 
-        this.bigFont = new BitmapFont();
-        final Color fontColor = new Color(0.494f, 0.788f, 0.0039f, 1.0f);
-        this.bigFont.setColor(fontColor);
-
-        this.bigFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        this.bigFont.getData().setScale(2.5f);
-
-        this.smallFont = new BitmapFont();
-        this.smallFont.setColor(fontColor);
-        this.smallFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        this.smallFont.getData().setScale(1.5f);
-
         camera = new OrthographicCamera();
         viewport = new FitViewport(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT, camera);
 
         this.background = new Sprite(new Texture("gameover_bg_small.png"));
         background.setSize(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT);
+
+        //Try new font
+        this.customFont = new BitmapFont(Gdx.files.internal("customFont.fnt"));
+        this.customFont.setColor(new Color(0.494f, 0.788f, 0.0039f, 1.0f));
+
+        this.smallCustomFont = new BitmapFont(Gdx.files.internal("smallFontNew.fnt"));
+        this.smallCustomFont.setColor(new Color(0.494f, 0.788f, 0.0039f, 1.0f));
 
         this.currentScore = currentScore;
 
@@ -84,7 +79,7 @@ public class GameOverScreen implements Screen {
 
         float centerY = worldHeight / 2f;
 
-        bigFont.draw(batch, "Game Over!",
+        customFont.draw(batch, "Game Over!",
             centerX,
             centerY + 200,
             worldWidth,
@@ -92,7 +87,7 @@ public class GameOverScreen implements Screen {
             false
         );
 
-        smallFont.draw(batch, String.format("""
+        smallCustomFont.draw(batch, String.format("""
                 Score: %d
                 Personal best: %d
 
@@ -139,8 +134,8 @@ public class GameOverScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        bigFont.dispose();
-        smallFont.dispose();
+        customFont.dispose();
+        smallCustomFont.dispose();
         background.getTexture().dispose();
     }
 }

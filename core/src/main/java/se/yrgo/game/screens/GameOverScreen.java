@@ -80,7 +80,6 @@ public class GameOverScreen implements Screen {
 
         float centerY = worldHeight / 2f;
 
-        // Game Over text
         bigFont.draw(batch, "Game Over!",
             centerX,
             centerY + 200,
@@ -89,31 +88,17 @@ public class GameOverScreen implements Screen {
             false
         );
 
-        // Score
-        smallFont.draw(batch, "Score: " + currentScore,
-            centerX,
-            centerY + 60,
-            worldWidth,
-            Align.center,
-            false
-        );
-        smallFont.draw(batch, "Personal best: " + game.getPreviousHighscore(),
-            centerX,
-            centerY + 120,
-            worldWidth,
-            Align.center,
-            false
-        );
+        smallFont.draw(batch, String.format("""
+                Score: %d
+                Personal best: %d
 
-        // Restart instruction
-        smallFont.draw(batch, "Press SPACE to restart",
+                Press SPACE to restart""", currentScore, game.getPreviousHighscore()),
             centerX,
-            centerY - 10,
+            centerY + 100,
             worldWidth,
             Align.center,
             false
         );
-
 
         batch.end();
 

@@ -30,6 +30,8 @@ public class GameOverScreen implements Screen {
     private Viewport viewport;
     private Camera camera;
 
+    private float elapsedTime = 0;
+
     public GameOverScreen(BirbGame game, int currentScore) {
         this.game = game;
 
@@ -65,6 +67,8 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        elapsedTime += delta;
+
         ScreenUtils.clear(Color.GRAY);
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
@@ -103,9 +107,12 @@ public class GameOverScreen implements Screen {
         batch.end();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            game.setScreen(new GameScreen(game));
-            dispose();
-            game.resetPreviousHighscore();
+            //Wait one second before restarting, in case player just pressed space.
+            if (elapsedTime > 1) {
+                game.setScreen(new GameScreen(game));
+                dispose();
+                game.resetPreviousHighscore();
+            }
         }
     }
 

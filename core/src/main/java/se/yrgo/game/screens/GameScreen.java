@@ -71,8 +71,8 @@ public class GameScreen implements Screen {
         );
 
         currentScore = 0;
-        font = new BitmapFont();
-        font.getData().setScale(2);
+        font = new BitmapFont(Gdx.files.internal("smallFontNew.fnt"));
+        font.setColor(Color.WHITE);
 
         //Background Music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("BirbEasy.mp3"));

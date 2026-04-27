@@ -240,7 +240,7 @@ public class GameScreen implements Screen {
     private void spawnObstacle() {
         var obstacle = obstaclePool.obtain();
         obstacle.reset();
-        obstacle.init(currentObstacleSpeed);
+        obstacle.init(currentObstacleSpeed, game.getDifficulty().obstacleGap);
         activeObstacles.add(obstacle);
     }
 
@@ -248,6 +248,8 @@ public class GameScreen implements Screen {
         this.obstaclePool = new Pool<ObstaclePair>() {
             @Override
             protected ObstaclePair newObject() {
+
+                int gap = game.getDifficulty().obstacleGap;
 
                 var fork = new Obstacle("ForkSprite.png",
                     GameFunctionalityConstants.WORLD_WIDTH,
@@ -258,7 +260,7 @@ public class GameScreen implements Screen {
                 var knife = new Obstacle(
                     "KnifeSprite.png",
                     GameFunctionalityConstants.WORLD_WIDTH,
-                    ObstacleConstants.OBSTACLE_HEIGHT + ObstacleConstants.OBSTACLE_GAP,
+                    ObstacleConstants.OBSTACLE_HEIGHT + gap,
                     ObstacleConstants.OBSTACLE_WIDTH,
                     ObstacleConstants.OBSTACLE_HEIGHT
                 );

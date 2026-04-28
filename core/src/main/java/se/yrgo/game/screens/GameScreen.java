@@ -176,6 +176,13 @@ public class GameScreen implements Screen {
             GameFunctionalityConstants.WORLD_WIDTH,
             Align.left,
             false);
+        font.draw(batch,
+            String.format("%d", game.getPreviousHighscore()),
+            (scoreBox.getX() + (GameFunctionalityConstants.SCORE_BOX_WIDTH * 0.75f) - 10),
+            (GameFunctionalityConstants.WORLD_HEIGHT - (GameFunctionalityConstants.SCORE_BOX_HEIGHT / 2f)),
+            GameFunctionalityConstants.WORLD_WIDTH,
+            Align.left,
+            false);
 //        GlyphLayout layout = new GlyphLayout(font, String.format("""
 //            %d               %d""", currentScore, game.getPreviousHighscore()));
 

@@ -192,7 +192,7 @@ public class GameScreen implements Screen {
         batch.end();
 
         //For debugging. May be deleted later
-        drawShapesOutlinesDebug();
+//        drawShapesOutlinesDebug();
     }
 
     /**

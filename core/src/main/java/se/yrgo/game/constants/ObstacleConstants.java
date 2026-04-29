@@ -8,7 +8,7 @@ import com.badlogic.gdx.Gdx;
  */
 public class ObstacleConstants {
     public static final int OBSTACLE_WIDTH = 52;
-    public static final int OBSTACLE_HEIGHT = 360;
+    public static final int OBSTACLE_HEIGHT = 400;
     public static final int KNIFE_SHAPE_WIDTH = 42;
 
     public static final int OBSTACLE_SPEED = 150;

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -54,6 +55,7 @@ public class GameScreen implements Screen {
 
     private int currentScore;
     private BitmapFont font;
+    private Sprite scoreBox;
 
     private float currentObstacleSpeed;
 
@@ -71,8 +73,15 @@ public class GameScreen implements Screen {
         );
 
         currentScore = 0;
+
+        //Score box
         font = new BitmapFont(Gdx.files.internal("smallFontNew.fnt"));
-        font.setColor(Color.WHITE);
+        font.setColor(new Color(0.878f, 0.655f, 0.220f, 0.8f));
+        scoreBox = new Sprite(new Texture("scorebox.png"));
+        scoreBox.setSize(GameFunctionalityConstants.SCORE_BOX_WIDTH, GameFunctionalityConstants.SCORE_BOX_HEIGHT);
+        scoreBox.setPosition(0,
+            GameFunctionalityConstants.WORLD_HEIGHT - scoreBox.getHeight());
+        scoreBox.setAlpha(0.8f);
 
         //Background Music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("BirbEasy.mp3"));
@@ -159,16 +168,31 @@ public class GameScreen implements Screen {
             obs.render(batch);
         }
 
-        //score counting, standard sizing 15px(?)
-        GlyphLayout layout = new GlyphLayout(font, String.format("""
-            Score: %d   (Personal best: %d)""", currentScore, game.getPreviousHighscore()));
-        font.draw(batch, layout, (GameFunctionalityConstants.WORLD_WIDTH - layout.width) / 2,
-            GameFunctionalityConstants.WORLD_HEIGHT - 20);
+        scoreBox.draw(batch);
+        font.draw(batch,
+            String.format("%d", currentScore),
+            (scoreBox.getX() + (GameFunctionalityConstants.SCORE_BOX_WIDTH / 4f)),
+            (GameFunctionalityConstants.WORLD_HEIGHT - (GameFunctionalityConstants.SCORE_BOX_HEIGHT / 2f)),
+            GameFunctionalityConstants.WORLD_WIDTH,
+            Align.left,
+            false);
+        font.draw(batch,
+            String.format("%d", game.getPreviousHighscore()),
+            (scoreBox.getX() + (GameFunctionalityConstants.SCORE_BOX_WIDTH * 0.75f) - 10),
+            (GameFunctionalityConstants.WORLD_HEIGHT - (GameFunctionalityConstants.SCORE_BOX_HEIGHT / 2f)),
+            GameFunctionalityConstants.WORLD_WIDTH,
+            Align.left,
+            false);
+//        GlyphLayout layout = new GlyphLayout(font, String.format("""
+//            %d               %d""", currentScore, game.getPreviousHighscore()));
+
+//        font.draw(batch, layout, 0,
+//            GameFunctionalityConstants.WORLD_HEIGHT);
 
         batch.end();
 
         //For debugging. May be deleted later
-        drawShapesOutlinesDebug();
+//        drawShapesOutlinesDebug();
     }
 
     /**
@@ -293,6 +317,7 @@ public class GameScreen implements Screen {
         background.getTexture().dispose();
         font.dispose();
         backgroundMusic.dispose();
+        scoreBox.getTexture().dispose();
 
         // Dispose all active obstacles
         for (ObstaclePair obs : activeObstacles) {

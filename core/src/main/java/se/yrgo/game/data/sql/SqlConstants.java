@@ -28,4 +28,11 @@ public class SqlConstants {
         FROM %s
         ORDER BY %s DESC
         LIMIT 1""", FLD_SCORE, TABLE_NAME, FLD_SCORE);
+
+    public static final String SELECT_HIGHEST_SCORE_FOR_DIFFICULTY = String.format("""
+        SELECT %s
+        FROM %s
+        WHERE %s = ?
+        ORDER BY %s DESC
+        LIMIT 1""", FLD_SCORE, TABLE_NAME, FLD_DIFFICULTY, FLD_SCORE);
 }

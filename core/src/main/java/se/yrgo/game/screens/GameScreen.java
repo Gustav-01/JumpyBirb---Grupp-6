@@ -108,9 +108,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         updateState(delta);
         draw(delta);
-
         checkForGameOver();
-
     }
 
     /**
@@ -183,11 +181,6 @@ public class GameScreen implements Screen {
             GameFunctionalityConstants.WORLD_WIDTH,
             Align.left,
             false);
-//        GlyphLayout layout = new GlyphLayout(font, String.format("""
-//            %d               %d""", currentScore, game.getPreviousHighscore()));
-
-//        font.draw(batch, layout, 0,
-//            GameFunctionalityConstants.WORLD_HEIGHT);
 
         batch.end();
 

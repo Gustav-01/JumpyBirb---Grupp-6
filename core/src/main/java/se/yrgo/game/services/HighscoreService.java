@@ -1,5 +1,6 @@
 package se.yrgo.game.services;
 
+import se.yrgo.game.constants.Difficulty;
 import se.yrgo.game.data.BirbScoreDao;
 import se.yrgo.game.data.ScoreDao;
 
@@ -10,10 +11,10 @@ public class HighscoreService {
         this.scoreDao = new BirbScoreDao();
     }
 
-    public boolean registerFinalScore(int score) {
-        if (isNewHighscore(score)) {
+    public boolean registerFinalScore(int score, Difficulty difficulty) {
+        if (isNewHighscore(score, difficulty)) {
             try {
-                scoreDao.saveScore(score);
+                scoreDao.saveScore(score, difficulty);
                 return true;
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -22,21 +23,13 @@ public class HighscoreService {
         return false;
     }
 
-    private boolean isNewHighscore(int score) {
-        return getPreviousHighscore() < score;
+    private boolean isNewHighscore(int score, Difficulty difficulty) {
+        return getPreviousHighscore(difficulty) < score;
     }
 
-//    private boolean storeHighscore(int score) {
-//        try {
-//            ;
-//        } catch (RuntimeException e) {
-//            System.err.println(e.getMessage());
-//        }
-//    }
-
-    public int getPreviousHighscore() {
+    public int getPreviousHighscore(Difficulty difficulty) {
         try {
-            return scoreDao.getHighscore();
+            return scoreDao.getHighscoreForDifficulty(difficulty);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             return 0;

@@ -45,6 +45,7 @@ public class StartScreen implements Screen {
 
     private void startGame(Difficulty difficulty) {
         game.setDifficulty(difficulty);
+        game.resetPreviousHighscore();
         game.setScreen(new GameScreen(game));
         dispose();
     }

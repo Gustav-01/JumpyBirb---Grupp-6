@@ -1,6 +1,6 @@
 package se.yrgo.game.data;
 
-import se.yrgo.game.constants.Level;
+import se.yrgo.game.constants.Difficulty;
 import se.yrgo.game.data.sql.SqlConstants;
 
 import java.sql.Connection;
@@ -32,7 +32,7 @@ public class BirbScoreDao implements ScoreDao{
     }
 
     @Override
-    public boolean saveScore(int score, Level level) {
+    public boolean saveScore(int score, Difficulty difficulty) {
         throw new RuntimeException("No implementation.");
     }
 

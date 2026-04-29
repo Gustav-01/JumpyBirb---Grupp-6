@@ -19,21 +19,6 @@ public class BirbScoreDao implements ScoreDao {
     }
 
     @Override
-    public boolean saveScore(int score) {
-        try (PreparedStatement ps = connection.prepareStatement(SqlConstants.INSERT_SCORE)) {
-            ps.setInt(1, score);
-            int rows = ps.executeUpdate();
-            if (rows > 0) {
-                return true;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return false;
-    }
-
-    @Override
     public boolean saveScore(int score, Difficulty difficulty) {
         try (PreparedStatement ps = connection.prepareStatement(SqlConstants.INSERT_SCORE_DIFFICULTY)) {
             ps.setInt(1, score);
@@ -51,18 +36,7 @@ public class BirbScoreDao implements ScoreDao {
     }
 
     @Override
-    public int getHighscore() {
-        try (PreparedStatement ps = connection.prepareStatement(SqlConstants.SELECT_HIGHEST_SCORE)) {
-            var res = ps.executeQuery();
-            return res.getInt(SqlConstants.FLD_SCORE);
-        } catch (SQLException e) {
-            throw new RuntimeException("There was an error when attempting to retrieve a highscore.", e);
-        }
-    }
-
-    @Override
     public int getHighscoreForDifficulty(Difficulty difficulty) {
-        System.out.println(difficulty.toString());
         try (PreparedStatement ps = connection.prepareStatement(SqlConstants.SELECT_HIGHEST_SCORE_FOR_DIFFICULTY)) {
             ps.setString(1, difficulty.toString());
             var res = ps.executeQuery();

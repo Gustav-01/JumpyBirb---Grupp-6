@@ -25,6 +25,7 @@ import se.yrgo.game.sprites.ObstaclePair;
 import se.yrgo.game.constants.GameFunctionalityConstants;
 import se.yrgo.game.constants.KiwiConstants;
 import se.yrgo.game.constants.ObstacleConstants;
+import se.yrgo.game.sprites.ScoreBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +55,7 @@ public class GameScreen implements Screen {
     private boolean hasPaused = false;
 
     private int currentScore;
-    private BitmapFont font;
-    private Sprite scoreBox;
+    private ScoreBox scoreBox;
 
     private float currentObstacleSpeed;
 
@@ -73,15 +73,7 @@ public class GameScreen implements Screen {
         );
 
         currentScore = 0;
-
-        //Score box
-        font = new BitmapFont(Gdx.files.internal("smallFontNew.fnt"));
-        font.setColor(new Color(0.878f, 0.655f, 0.220f, 0.8f));
-        scoreBox = new Sprite(new Texture("scorebox.png"));
-        scoreBox.setSize(GameFunctionalityConstants.SCORE_BOX_WIDTH, GameFunctionalityConstants.SCORE_BOX_HEIGHT);
-        scoreBox.setPosition(0,
-            GameFunctionalityConstants.WORLD_HEIGHT - scoreBox.getHeight());
-        scoreBox.setAlpha(0.8f);
+        this.scoreBox = new ScoreBox();
 
         //Background Music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("BirbEasy.mp3"));
@@ -166,21 +158,7 @@ public class GameScreen implements Screen {
             obs.render(batch);
         }
 
-        scoreBox.draw(batch);
-        font.draw(batch,
-            String.format("%d", currentScore),
-            (scoreBox.getX() + (GameFunctionalityConstants.SCORE_BOX_WIDTH / 4f)),
-            (GameFunctionalityConstants.WORLD_HEIGHT - (GameFunctionalityConstants.SCORE_BOX_HEIGHT / 2f)),
-            GameFunctionalityConstants.WORLD_WIDTH,
-            Align.left,
-            false);
-        font.draw(batch,
-            String.format("%d", game.getPreviousHighscore()),
-            (scoreBox.getX() + (GameFunctionalityConstants.SCORE_BOX_WIDTH * 0.75f) - 10),
-            (GameFunctionalityConstants.WORLD_HEIGHT - (GameFunctionalityConstants.SCORE_BOX_HEIGHT / 2f)),
-            GameFunctionalityConstants.WORLD_WIDTH,
-            Align.left,
-            false);
+        scoreBox.draw(batch, currentScore, game.getPreviousHighscore());
 
         batch.end();
 
@@ -308,9 +286,8 @@ public class GameScreen implements Screen {
         batch.dispose();
         kiwi.dispose();
         background.getTexture().dispose();
-        font.dispose();
+        scoreBox.dispose();
         backgroundMusic.dispose();
-        scoreBox.getTexture().dispose();
 
         // Dispose all active obstacles
         for (ObstaclePair obs : activeObstacles) {

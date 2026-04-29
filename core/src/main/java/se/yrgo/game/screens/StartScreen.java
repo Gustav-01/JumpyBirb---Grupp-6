@@ -30,14 +30,14 @@ public class StartScreen implements Screen {
         batch.begin();
         font.draw(batch, "Choose difficulty:", 100, 300);
         font.draw(batch, "1 - Easy",           100, 250);
-        font.draw(batch, "2 - Intermediate",   100, 220);
+        font.draw(batch, "2 - Medium",   100, 220);
         font.draw(batch, "3 - Hard",           100, 190);
         batch.end();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
             startGame(Difficulty.EASY);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
-            startGame(Difficulty.INTERMEDIATE);
+            startGame(Difficulty.MEDIUM);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
             startGame(Difficulty.HARD);
         }

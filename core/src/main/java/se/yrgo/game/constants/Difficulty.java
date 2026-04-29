@@ -2,8 +2,8 @@ package se.yrgo.game.constants;
 
 public enum Difficulty {
     EASY(210),
-    INTERMEDIATE(180),
-    HARD(150);
+    MEDIUM(150),
+    HARD(130);
 
     public final int obstacleGap;
 

@@ -1,8 +1,10 @@
 package se.yrgo.game;
 
 import com.badlogic.gdx.Game;
+import se.yrgo.game.constants.Difficulty;
 import se.yrgo.game.screens.GameOverScreen;
 import se.yrgo.game.screens.GameScreen;
+import se.yrgo.game.screens.StartScreen;
 import se.yrgo.game.services.HighscoreService;
 
 
@@ -13,6 +15,7 @@ public class BirbGame extends Game {
     private GameScreen gameScreen;
     private GameOverScreen gameOverScreen;
     private HighscoreService highscoreService;
+    private Difficulty difficulty = Difficulty.INTERMEDIATE;
 
     private int previousHighscore;
 
@@ -24,8 +27,7 @@ public class BirbGame extends Game {
         highscoreService = new HighscoreService();
         previousHighscore = highscoreService.getPreviousHighscore();
 
-        gameScreen = new GameScreen(this);
-        setScreen(gameScreen);
+        setScreen(new StartScreen(this));
     }
 
     public void saveScore(int score) {
@@ -45,4 +47,8 @@ public class BirbGame extends Game {
     public void resetPreviousHighscore() {
         previousHighscore = highscoreService.getPreviousHighscore();
     }
-}
+
+    public Difficulty getDifficulty() { return difficulty; }
+
+    public void setDifficulty(Difficulty difficulty) { this.difficulty = difficulty; }
+ }

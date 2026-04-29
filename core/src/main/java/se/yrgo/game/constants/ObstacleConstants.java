@@ -11,7 +11,6 @@ public class ObstacleConstants {
     public static final int OBSTACLE_HEIGHT = 360;
     public static final int KNIFE_SHAPE_WIDTH = 42;
 
-    public static final int OBSTACLE_GAP = 170;
     public static final int OBSTACLE_SPEED = 150;
     public static final float OBSTACLE_DISTANCE = 500f;
 }

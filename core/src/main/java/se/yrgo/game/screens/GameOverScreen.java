@@ -91,7 +91,8 @@ public class GameOverScreen implements Screen {
                 Score: %d
                 Personal best: %d
 
-                Press SPACE to restart""", currentScore, game.getPreviousHighscore()),
+                Press SPACE to restart
+                Press 1 to change difficulty""", currentScore, game.getPreviousHighscore()),
             centerX,
             centerY + 100,
             worldWidth,
@@ -107,6 +108,13 @@ public class GameOverScreen implements Screen {
                 game.setScreen(new GameScreen(game));
                 dispose();
                 game.resetPreviousHighscore();
+            }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+            if (elapsedTime > 1) {
+                game.setScreen(new StartScreen(game));
+                dispose();
             }
         }
     }

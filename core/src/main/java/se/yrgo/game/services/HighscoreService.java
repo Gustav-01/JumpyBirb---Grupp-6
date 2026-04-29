@@ -17,7 +17,8 @@ public class HighscoreService {
                 scoreDao.saveScore(score, difficulty);
                 return true;
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(String.format(
+                    "Error when saving score of %d points at difficulty %s", score, difficulty.prettyName), e);
             }
         }
         return false;

@@ -76,12 +76,12 @@ public class GameScreen implements Screen {
 
         //Score box
         font = new BitmapFont(Gdx.files.internal("smallFontNew.fnt"));
-        font.setColor(new Color(0.878f, 0.655f, 0.220f, 0.7f));
+        font.setColor(new Color(0.878f, 0.655f, 0.220f, 0.8f));
         scoreBox = new Sprite(new Texture("scorebox.png"));
         scoreBox.setSize(GameFunctionalityConstants.SCORE_BOX_WIDTH, GameFunctionalityConstants.SCORE_BOX_HEIGHT);
         scoreBox.setPosition(0,
             GameFunctionalityConstants.WORLD_HEIGHT - scoreBox.getHeight());
-        scoreBox.setAlpha(0.7f);
+        scoreBox.setAlpha(0.8f);
 
         //Background Music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("BirbEasy.mp3"));

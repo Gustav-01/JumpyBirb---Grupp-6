@@ -103,21 +103,21 @@ public class GameOverScreen implements Screen {
 
         batch.end();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            //Wait one second before restarting, in case player just pressed space.
-            if (elapsedTime > 1) {
+
+        //Wait one second before restarting, in case player just pressed space.
+        if (elapsedTime > 1) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 game.setScreen(new GameScreen(game));
                 dispose();
                 game.resetPreviousHighscore();
             }
-        }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-            if (elapsedTime > 1) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
                 game.setScreen(new StartScreen(game));
                 dispose();
             }
         }
+
     }
 
     @Override

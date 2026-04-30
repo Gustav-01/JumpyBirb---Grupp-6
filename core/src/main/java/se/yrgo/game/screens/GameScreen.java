@@ -99,7 +99,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         updateState(delta);
-        draw(delta);
+        draw();
         checkForGameOver();
     }
 
@@ -145,7 +145,7 @@ public class GameScreen implements Screen {
     /**
      * Helper method for drawing all textures in a frame.
      */
-    public void draw(float delta) {
+    public void draw() {
         ScreenUtils.clear(Color.GRAY);
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);

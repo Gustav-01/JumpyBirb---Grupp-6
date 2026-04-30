@@ -23,9 +23,7 @@ public class KiwiSprite {
 
     private boolean isFlapping;
     private float stateTime = 0f;
-    //    private Texture texture;
     private Circle bodyPosition;
-    //    private Sprite sprite;
     private float velocityY = 0f;
 
     private int circleYPixelTweak = 26;

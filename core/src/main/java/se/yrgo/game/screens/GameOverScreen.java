@@ -125,19 +125,19 @@ public class GameOverScreen implements Screen {
         viewport.update(width, height, true);
     }
 
+    @SuppressWarnings("java:S1186")
     @Override
     public void pause() {
-
     }
 
+    @SuppressWarnings("java:S1186")
     @Override
     public void resume() {
-
     }
 
+    @SuppressWarnings("java:S1186")
     @Override
     public void hide() {
-
     }
 
     @Override

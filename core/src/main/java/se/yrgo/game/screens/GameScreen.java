@@ -255,6 +255,7 @@ public class GameScreen implements Screen {
                 var knife = new Obstacle(
                     "KnifeSprite.png",
                     GameFunctionalityConstants.WORLD_WIDTH,
+                    //NOSONAR
                     ObstacleConstants.OBSTACLE_HEIGHT + gap,
                     ObstacleConstants.OBSTACLE_WIDTH,
                     ObstacleConstants.OBSTACLE_HEIGHT

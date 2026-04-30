@@ -90,9 +90,10 @@ public class GameOverScreen implements Screen {
         smallCustomFont.draw(batch, String.format("""
                 Score: %d
                 Personal best: %d
+                Difficulty: %s
 
                 Press SPACE to restart
-                Press 1 to change difficulty""", currentScore, game.getPreviousHighscore()),
+                Press 1 to change difficulty""", currentScore, game.getPreviousHighscore(), game.getDifficulty().prettyName),
             centerX,
             centerY + 100,
             worldWidth,

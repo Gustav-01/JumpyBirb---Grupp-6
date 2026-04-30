@@ -1,15 +1,17 @@
 package se.yrgo.game.data;
 
-import se.yrgo.game.constants.Level;
+import se.yrgo.game.constants.Difficulty;
 import se.yrgo.game.data.sql.SqlConstants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class BirbScoreDao implements ScoreDao{
+public class BirbScoreDao implements ScoreDao {
+
     private Connection connection;
-    private GameDatabase gameDatabase = new GameDatabaseJdbc();;
+    private GameDatabase gameDatabase = new GameDatabaseJdbc();
+    ;
 
     public BirbScoreDao() {
         gameDatabase.connect();
@@ -17,9 +19,11 @@ public class BirbScoreDao implements ScoreDao{
     }
 
     @Override
-    public boolean saveScore(int score) {
-        try (PreparedStatement ps = connection.prepareStatement(SqlConstants.INSERT_SCORE)) {
+    public boolean saveScore(int score, Difficulty difficulty) {
+        try (PreparedStatement ps = connection.prepareStatement(SqlConstants.INSERT_SCORE_DIFFICULTY)) {
             ps.setInt(1, score);
+            ps.setString(2, difficulty.toString());
+
             int rows = ps.executeUpdate();
             if (rows > 0) {
                 return true;
@@ -32,13 +36,9 @@ public class BirbScoreDao implements ScoreDao{
     }
 
     @Override
-    public boolean saveScore(int score, Level level) {
-        throw new RuntimeException("No implementation.");
-    }
-
-    @Override
-    public int getHighscore() {
-        try (PreparedStatement ps = connection.prepareStatement(SqlConstants.SELECT_HIGHEST_SCORE)) {
+    public int getHighscoreForDifficulty(Difficulty difficulty) {
+        try (PreparedStatement ps = connection.prepareStatement(SqlConstants.SELECT_HIGHEST_SCORE_FOR_DIFFICULTY)) {
+            ps.setString(1, difficulty.toString());
             var res = ps.executeQuery();
             return res.getInt(SqlConstants.FLD_SCORE);
         } catch (SQLException e) {

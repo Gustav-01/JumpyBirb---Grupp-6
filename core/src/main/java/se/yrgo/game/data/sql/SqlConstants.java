@@ -15,17 +15,14 @@ public class SqlConstants {
         %s TEXT
         )""", TABLE_NAME, FLD_SCORE, FLD_DIFFICULTY);
 
-    public static final String INSERT_SCORE = String.format("""
-        INSERT INTO %s (%s)
-        VALUES (?)""", TABLE_NAME, FLD_SCORE);
-
     public static final String INSERT_SCORE_DIFFICULTY = String.format("""
         INSERT INTO %s (%s, %s)
         VALUES (?,?)""", TABLE_NAME, FLD_SCORE, FLD_DIFFICULTY);
 
-    public static final String SELECT_HIGHEST_SCORE = String.format("""
+    public static final String SELECT_HIGHEST_SCORE_FOR_DIFFICULTY = String.format("""
         SELECT %s
         FROM %s
+        WHERE %s = ?
         ORDER BY %s DESC
-        LIMIT 1""", FLD_SCORE, TABLE_NAME, FLD_SCORE);
+        LIMIT 1""", FLD_SCORE, TABLE_NAME, FLD_DIFFICULTY, FLD_SCORE);
 }

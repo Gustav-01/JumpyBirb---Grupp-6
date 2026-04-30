@@ -25,13 +25,13 @@ public class BirbGame extends Game {
     @Override
     public void create() {
         highscoreService = new HighscoreService();
-        previousHighscore = highscoreService.getPreviousHighscore();
+        previousHighscore = highscoreService.getPreviousHighscore(difficulty);
 
         setScreen(new StartScreen(this));
     }
 
     public void saveScore(int score) {
-        highscoreService.registerFinalScore(score);
+        highscoreService.registerFinalScore(score, difficulty);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class BirbGame extends Game {
     }
 
     public void resetPreviousHighscore() {
-        previousHighscore = highscoreService.getPreviousHighscore();
+        previousHighscore = highscoreService.getPreviousHighscore(difficulty);
     }
 
     public Difficulty getDifficulty() { return difficulty; }

@@ -12,8 +12,6 @@ import se.yrgo.game.services.HighscoreService;
  * The main game class, containing application life-cycle methods.
  */
 public class BirbGame extends Game {
-    private GameScreen gameScreen;
-    private GameOverScreen gameOverScreen;
     private HighscoreService highscoreService;
     private Difficulty difficulty = Difficulty.MEDIUM;
 

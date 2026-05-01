@@ -50,10 +50,15 @@ public class StartScreen implements Screen {
         dispose();
     }
 
+    @SuppressWarnings("java:S1186")
     @Override public void resize(int width, int height) {}
+    @SuppressWarnings("java:S1186")
     @Override public void show() {}
+    @SuppressWarnings("java:S1186")
     @Override public void hide() {}
+    @SuppressWarnings("java:S1186")
     @Override public void pause() {}
+    @SuppressWarnings("java:S1186")
     @Override public void resume() {}
 
     @Override

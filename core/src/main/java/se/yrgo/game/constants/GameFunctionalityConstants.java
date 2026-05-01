@@ -11,4 +11,6 @@ public class GameFunctionalityConstants {
 
     public static final float SCORE_BOX_WIDTH = 720 / 3f;
     public static final float SCORE_BOX_HEIGHT = 360 / 3f;
+
+    private GameFunctionalityConstants(){}
 }

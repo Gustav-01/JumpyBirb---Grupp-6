@@ -13,4 +13,6 @@ public class ObstacleConstants {
 
     public static final int OBSTACLE_SPEED = 150;
     public static final float OBSTACLE_DISTANCE = 500f;
+
+    private ObstacleConstants() {}
 }

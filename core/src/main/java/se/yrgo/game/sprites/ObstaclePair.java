@@ -21,7 +21,7 @@ public class ObstaclePair implements Pool.Poolable {
 
     private Rectangle knifeBorderPos;
     private Rectangle forkBorderPos;
-    private static final float knifeBorderWidthCutRate = ObstacleConstants.KNIFE_SHAPE_WIDTH / 5f;
+    private static final float KNIFE_BORDER_WIDTH_CUT_RATE = ObstacleConstants.KNIFE_SHAPE_WIDTH / 5f;
 
 
     private final List<Rectangle> obstacleCollidableShapes = new ArrayList<>();
@@ -46,9 +46,9 @@ public class ObstaclePair implements Pool.Poolable {
 
     private void initCollisionShapes(){
         knifeBorderPos = new Rectangle(
-            knife.getX() + (knifeBorderWidthCutRate * 2),
+            knife.getX() + (KNIFE_BORDER_WIDTH_CUT_RATE * 2),
             knife.getY(),
-            ObstacleConstants.KNIFE_SHAPE_WIDTH - (knifeBorderWidthCutRate * 2),
+            ObstacleConstants.KNIFE_SHAPE_WIDTH - (KNIFE_BORDER_WIDTH_CUT_RATE * 2),
             ObstacleConstants.OBSTACLE_HEIGHT
         );
         obstacleCollidableShapes.add(knifeBorderPos);
@@ -66,7 +66,7 @@ public class ObstaclePair implements Pool.Poolable {
         knife.update(delta);
         fork.update(delta);
 
-        knifeBorderPos.setX(knife.getX() + knifeBorderWidthCutRate * 2);
+        knifeBorderPos.setX(knife.getX() + KNIFE_BORDER_WIDTH_CUT_RATE * 2);
         knifeBorderPos.setY(knife.getY());
         forkBorderPos.setX(fork.getX());
         forkBorderPos.setY(fork.getY());
@@ -112,7 +112,8 @@ public class ObstaclePair implements Pool.Poolable {
 
     private float randomizeYPosition() {
         float y = ThreadLocalRandom.current().nextInt(
-            ObstacleConstants.OBSTACLE_HEIGHT / 5, ObstacleConstants.OBSTACLE_HEIGHT - (ObstacleConstants.OBSTACLE_HEIGHT / 4)) * -1;
+            ObstacleConstants.OBSTACLE_HEIGHT / 5,
+            ObstacleConstants.OBSTACLE_HEIGHT - (ObstacleConstants.OBSTACLE_HEIGHT / 4)) * -1f;
         return y;
     }
 

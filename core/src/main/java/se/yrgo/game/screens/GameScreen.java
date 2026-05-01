@@ -99,7 +99,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         updateState(delta);
-        draw(delta);
+        draw();
         checkForGameOver();
     }
 
@@ -145,7 +145,7 @@ public class GameScreen implements Screen {
     /**
      * Helper method for drawing all textures in a frame.
      */
-    public void draw(float delta) {
+    public void draw() {
         ScreenUtils.clear(Color.GRAY);
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
@@ -255,7 +255,8 @@ public class GameScreen implements Screen {
                 var knife = new Obstacle(
                     "KnifeSprite.png",
                     GameFunctionalityConstants.WORLD_WIDTH,
-                    ObstacleConstants.OBSTACLE_HEIGHT + gap,
+                    ObstacleConstants.OBSTACLE_HEIGHT + gap, //NOSONAR
+
                     ObstacleConstants.OBSTACLE_WIDTH,
                     ObstacleConstants.OBSTACLE_HEIGHT
                 );
@@ -268,10 +269,12 @@ public class GameScreen implements Screen {
         };
     }
 
+    @SuppressWarnings("java:S1186")
     @Override
     public void hide() {
     }
 
+    @SuppressWarnings("java:S1186")
     @Override
     public void pause() {
     }

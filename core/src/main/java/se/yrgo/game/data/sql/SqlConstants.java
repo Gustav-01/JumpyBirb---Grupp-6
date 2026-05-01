@@ -25,4 +25,6 @@ public class SqlConstants {
         WHERE %s = ?
         ORDER BY %s DESC
         LIMIT 1""", FLD_SCORE, TABLE_NAME, FLD_DIFFICULTY, FLD_SCORE);
+
+    private SqlConstants() {}
 }

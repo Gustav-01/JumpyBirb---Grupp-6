@@ -9,10 +9,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import se.yrgo.game.constants.GameFunctionalityConstants;
 
+/**
+ * Displays the current score and the highscore.
+ * Draws a background box and renders the numbers inside it.
+ */
 public class ScoreBox {
     private BitmapFont font;
     private Sprite scoreBoxSprite;
 
+    /**
+     * Creates a new score box with a background image and font.
+     * Positions the box at the top-left corner of the screen.
+     */
     public ScoreBox() {
         font = new BitmapFont(Gdx.files.internal("smallFontNew.fnt"));
         font.setColor(new Color(0.878f, 0.655f, 0.220f, 0.8f));
@@ -23,6 +31,13 @@ public class ScoreBox {
         scoreBoxSprite.setAlpha(0.8f);
     }
 
+    /**
+     * Draws the score box and the current score values.
+     *
+     * @param batch        the SpriteBatch used for rendering
+     * @param currentScore the player's current score
+     * @param highscore    the stored highscore
+     */
     public void draw(SpriteBatch batch, int currentScore, int highscore) {
         scoreBoxSprite.draw(batch);
         font.draw(batch,
@@ -41,6 +56,9 @@ public class ScoreBox {
             false);
     }
 
+    /**
+     * Disposes the texture and font resources used by the score box.
+     */
     public void dispose() {
         scoreBoxSprite.getTexture().dispose();
         font.dispose();

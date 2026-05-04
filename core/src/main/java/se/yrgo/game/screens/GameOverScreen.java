@@ -17,6 +17,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import se.yrgo.game.BirbGame;
 import se.yrgo.game.constants.GameFunctionalityConstants;
 
+/**
+ * A LibGDX screen shown when the player collides with an obstacle
+ * and loses the game. It displays the final score and the personal best.
+ * The player can restart the game or return to the start screen.
+ */
 public class GameOverScreen implements Screen {
     private BirbGame game;
 
@@ -32,6 +37,12 @@ public class GameOverScreen implements Screen {
 
     private float elapsedTime = 0;
 
+    /**
+     * Creates a new Game Over screen with the given score.
+     *
+     * @param game the instance of the game
+     * @param currentScore the score from the finished round
+     */
     public GameOverScreen(BirbGame game, int currentScore) {
         this.game = game;
 
@@ -52,7 +63,10 @@ public class GameOverScreen implements Screen {
 
     }
 
-
+    /**
+     * Prepares the screen when it becomes visible.
+     * Positions the background and updates the camera.
+     */
     @Override
     public void show() {
         background.setPosition(0, 0);
@@ -60,6 +74,12 @@ public class GameOverScreen implements Screen {
         camera.update();
     }
 
+    /**
+     * Renders the background, score information, and restart instructions.
+     * Also listens for input to restart the game or change difficulty.
+     *
+     * @param delta time since last frame
+     */
     @Override
     public void render(float delta) {
         elapsedTime += delta;
@@ -120,6 +140,9 @@ public class GameOverScreen implements Screen {
 
     }
 
+    /**
+     * Updates the viewport when the window size changes.
+     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
@@ -140,6 +163,9 @@ public class GameOverScreen implements Screen {
     public void hide() {
     }
 
+    /**
+     * DIsposes all graphical resources used by this screen.
+     */
     @Override
     public void dispose() {
         batch.dispose();

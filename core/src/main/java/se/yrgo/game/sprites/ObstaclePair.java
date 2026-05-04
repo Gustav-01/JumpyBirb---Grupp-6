@@ -44,7 +44,10 @@ public class ObstaclePair implements Pool.Poolable {
         isScored = false;
     }
 
-    private void initCollisionShapes(){
+    /**
+     * Initializes the collision rectangles for both obstacles.
+     */
+    private void initCollisionShapes() {
         knifeBorderPos = new Rectangle(
             knife.getX() + (KNIFE_BORDER_WIDTH_CUT_RATE * 2),
             knife.getY(),
@@ -62,6 +65,12 @@ public class ObstaclePair implements Pool.Poolable {
         obstacleCollidableShapes.add(forkBorderPos);
     }
 
+    /**
+     * Updates the position of both obstacles and their collision shapes.
+     * Marks the pair as inactive if it moves outside the screen.
+     *
+     * @param delta time since last frame
+     */
     public void update(float delta) {
         knife.update(delta);
         fork.update(delta);
@@ -76,19 +85,34 @@ public class ObstaclePair implements Pool.Poolable {
         }
     }
 
+    /**
+     * @return true if the obstacle pair has moved past the left edge of the screen
+     */
     private boolean outsideScreen() {
         return fork.getX() < -ObstacleConstants.OBSTACLE_WIDTH;
     }
 
+    /**
+     * Draws both obstacles.
+     *
+     * @param batch the SpriteBatch used for rendering
+     */
     public void render(SpriteBatch batch) {
         knife.render(batch);
         fork.render(batch);
     }
 
+    /**
+     * @return true if the obstacle pair is active
+     */
     public boolean isAlive() {
         return alive;
     }
 
+    /**
+     * Resets the obstacle pair so it can be reused by the pool.
+     * Moves both obstacles back to the right side of the screen.
+     */
     @Override
     public void reset() {
         alive = false;
@@ -99,6 +123,12 @@ public class ObstaclePair implements Pool.Poolable {
         knife.setX(GameFunctionalityConstants.WORLD_WIDTH);
     }
 
+    /**
+     * Initializes the obstacle pair with a movement speed and vertical gap.
+     *
+     * @param speed horizontal movement speed
+     * @param gap   vertical space between the two obstacles
+     */
     public void init(float speed, int gap) {
         float y = randomizeYPosition();
         fork.setY(y);
@@ -110,6 +140,11 @@ public class ObstaclePair implements Pool.Poolable {
         alive = true;
     }
 
+    /**
+     * Generates a random Y position for the lower obstacle.
+     *
+     * @return a random vertical position
+     */
     private float randomizeYPosition() {
         float y = ThreadLocalRandom.current().nextInt(
             ObstacleConstants.OBSTACLE_HEIGHT / 5,
@@ -134,18 +169,30 @@ public class ObstaclePair implements Pool.Poolable {
         return false;
     }
 
+    /**
+     * @return an unmodifiable list of collision rectangles for this obstacle pair
+     */
     public List<Rectangle> getObstacleCollidableShapes() {
         return Collections.unmodifiableList(obstacleCollidableShapes);
     }
 
+    /**
+     * @return the collision rectangle for the knife
+     */
     public Rectangle getKnifeBorderPos() {
         return knifeBorderPos;
     }
 
+    /**
+     * @return the collision rectangle for the fork
+     */
     public Rectangle getForkBorderPos() {
         return forkBorderPos;
     }
 
+    /**
+     * Disposes the resources used in this class.
+     */
     public void dispose() {
         knife.dispose();
         fork.dispose();

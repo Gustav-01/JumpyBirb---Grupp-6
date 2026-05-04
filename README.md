@@ -1,18 +1,22 @@
-# Jumpy Bird 
+# Jumpy Birb
 
 This is a 2D infinite runner game, where you fly with Birb the kiwi to avoid the obstacles in your path. 
 
-All you have to do is press the space key to flap at the right timing!
-
 ## Building and running
+_Requirements: Have Git installed on your computer._
 
-Open a UNIX terminal in the root directory of the project.
+To run the game, first open a UNIX terminal and stand in a location where you want to have the game. There you clone this git repo, by entering `git clone https://github.com/Gustav-01/JumpyBirb---Grupp-6.git` 
 
-To build the project run `./gradlew build`.
+Then navigate to the root directory of the project, by entering `cd JumpyBirb---Grupp-6`.
 
-To run the program run `./gradlew run`.
+There you first build the project (only necessary once). Enter `./gradlew build`.
 
-This should invoke the gradle wrapper and install Gradle on your system. To manually install Gradle on your system, download and install the latest version from [gradle.org](https://gradle.org/).
+Then to start the game, run the command `./gradlew run`.
+
+## Game mechanics
+To avoid obstacles you have to press the space key or left-click to flap at the right timing. There are three different levels of difficulty: easy, medium or hard. You score points for each obstacle you clear, which are saved as highscores for the respective difficulty level. 
+
+Try to beat your last highscore, if you can!
 
 ## More info about GDX
 

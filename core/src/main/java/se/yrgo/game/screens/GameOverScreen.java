@@ -84,7 +84,7 @@ public class GameOverScreen implements Screen {
     public void render(float delta) {
         elapsedTime += delta;
 
-        ScreenUtils.clear(Color.GRAY);
+        ScreenUtils.clear(Color.BLACK);
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
 

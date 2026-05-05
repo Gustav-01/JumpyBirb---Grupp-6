@@ -82,7 +82,7 @@ public class GameScreen implements Screen {
         this.scoreBox = new ScoreBox();
 
         //Background Music
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("mainMusic.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("birbmusic-cut.ogg"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(1.0f); //1.f = full volume
 

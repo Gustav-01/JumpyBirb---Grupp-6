@@ -7,27 +7,32 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se.yrgo.game.BirbGame;
 import se.yrgo.game.constants.Difficulty;
+import se.yrgo.game.constants.GameFunctionalityConstants;
 
 public class StartScreen implements Screen {
 
     private final BirbGame game;
     private SpriteBatch batch;
-    private Texture menuTexture;
+    private Sprite menuTexture;
     private FitViewport viewport;
     private OrthographicCamera camera;
 
     public StartScreen(BirbGame game) {
         this.game = game;
         batch = new SpriteBatch();
-        menuTexture = new Texture(Gdx.files.internal("startMenuScreen.png"));
+        menuTexture = new Sprite(new Texture(Gdx.files.internal("startMenuScreen.png")));
+        menuTexture.setSize(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT);
+        menuTexture.setPosition(0,0);
 
         camera = new OrthographicCamera();
-        viewport = new FitViewport(800, 480, camera);
+        viewport = new FitViewport(GameFunctionalityConstants.WORLD_WIDTH,
+            GameFunctionalityConstants.WORLD_HEIGHT, camera);
     }
 
     @Override
@@ -37,9 +42,11 @@ public class StartScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        batch.setProjectionMatrix(camera.combined);
+        ScreenUtils.clear(Color.BLACK);
+        viewport.apply();
+        batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
-        batch.draw(menuTexture, 0, 0, 800, 480);
+        batch.draw(menuTexture, 0, 0, GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT);
         batch.end();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
@@ -71,6 +78,6 @@ public class StartScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        menuTexture.dispose();
+        menuTexture.getTexture().dispose();
     }
 }

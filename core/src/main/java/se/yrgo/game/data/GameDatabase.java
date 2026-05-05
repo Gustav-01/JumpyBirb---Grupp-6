@@ -2,6 +2,10 @@ package se.yrgo.game.data;
 
 import java.sql.Connection;
 
+/**
+ * Represents a simple database handler for the game.
+ * Implementations of this interface are responsible for opening a connection
+ */
 public interface GameDatabase {
     /**
      * Initiates a database connection for the {@code GameDatabase} instance.

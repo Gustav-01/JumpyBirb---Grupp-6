@@ -33,6 +33,8 @@ import java.util.List;
 
 /**
  * The main screen of the game, where the game mechanics take place.
+ * This screen updates the kiwi, spawn obstacles, checks for collisions,
+ * and draws all visual elements each frame
  */
 public class GameScreen implements Screen {
     private final boolean inDebugMode = false; //For debug purposes
@@ -59,6 +61,10 @@ public class GameScreen implements Screen {
 
     private float currentObstacleSpeed;
 
+    /**
+     * Creates a new gameplay screen and initializes game objects.
+     * @param game instance of the game
+     */
     public GameScreen(BirbGame game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -106,7 +112,7 @@ public class GameScreen implements Screen {
     /**
      * Provides the logic of the jump movement of the kiwi
      *
-     * @param delta
+     * @param delta time since last frame
      */
     private void updateState(float delta) {
         kiwi.update(delta);
@@ -216,6 +222,11 @@ public class GameScreen implements Screen {
         viewport.update(width, height, true);
     }
 
+    /**
+     * Called when the screen becomes visible.
+     * Resets state, initializes the obstacle pool,
+     * and starts background music.
+     */
     @Override
     public void show() {
         secondsPassed = 0;
@@ -232,6 +243,9 @@ public class GameScreen implements Screen {
         backgroundMusic.play();
     }
 
+    /**
+     * Spawns a new obstacle pair from the pool.
+     */
     private void spawnObstacle() {
         var obstacle = obstaclePool.obtain();
         obstacle.reset();
@@ -239,6 +253,9 @@ public class GameScreen implements Screen {
         activeObstacles.add(obstacle);
     }
 
+    /**
+     * Initializes the obstacle pool used for reusing obstacle objects.
+     */
     private void initPool() {
         this.obstaclePool = new Pool<ObstaclePair>() {
             @Override
@@ -279,11 +296,17 @@ public class GameScreen implements Screen {
     public void pause() {
     }
 
+    /**
+     * Called when the game resumes from a paused state.
+     */
     @Override
     public void resume() {
         hasPaused = true;
     }
 
+    /**
+     * Disposes all the graphic resources used on this screen.
+     */
     @Override
     public void dispose() {
         batch.dispose();

@@ -14,7 +14,8 @@ import se.yrgo.game.constants.GameFunctionalityConstants;
 import se.yrgo.game.constants.KiwiConstants;
 
 /**
- * Class for the kiwi sprite containing logics for updating and tracking position, drawing sprite and checking for
+ * Class for the kiwi sprite containing logics for updating and tracking position,
+ * drawing sprite and checking for
  * overlaps against other {@code Shape2D} objects.
  */
 public class KiwiSprite {
@@ -74,14 +75,15 @@ public class KiwiSprite {
     }
 
     /**
-     * Call every render cycle to update the kiwi's position, including logic for user input to jump.
+     * Call every render cycle to update the kiwi's position,
+     * including logic for user input to jump.
      *
-     * @param delta
+     * @param delta time since last frame
      */
 
     public void update(float delta) {
         stateTime += delta;
-        // jump
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             velocityY = KiwiConstants.JUMPFORCE;
 
@@ -92,7 +94,7 @@ public class KiwiSprite {
         if (isFlapping && flapAnimation.isAnimationFinished(stateTime)) {
             isFlapping = false;
         }
-        // gravity
+
         velocityY += GameFunctionalityConstants.GRAVITY * delta;
 
         float newY = y + velocityY * delta;
@@ -118,7 +120,7 @@ public class KiwiSprite {
     /**
      * Draw the kiwi to the given {@link SpriteBatch}.
      *
-     * @param batch
+     * @param batch the SpriteBatch used for drawing
      */
     public void draw(SpriteBatch batch) {
         TextureRegion frame;
@@ -142,18 +144,30 @@ public class KiwiSprite {
         return Intersector.overlaps(bodyPosition, rectangle);
     }
 
+    /**
+     * @return the kiwi's X position
+     */
     public float getX() {
         return x;
     }
 
+    /**
+     * @return the kiwi's Y position
+     */
     public float getY() {
         return y;
     }
 
+    /**
+     * Sets the kiwi's X position.
+     */
     public void setX(float x) {
         this.x = x;
     }
 
+    /**
+     * Sets the kiwi's Y position.
+     */
     public void setY(float y) {
         this.y = y;
     }
@@ -167,6 +181,9 @@ public class KiwiSprite {
         return bodyPosition;
     }
 
+    /**
+     * Disposes texture resources used by this class.
+     */
     public void dispose() {
         wingUp.dispose();
         wingDown.dispose();

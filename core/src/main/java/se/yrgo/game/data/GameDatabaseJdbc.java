@@ -4,6 +4,11 @@ import se.yrgo.game.data.sql.SqlConstants;
 
 import java.sql.*;
 
+/**
+ * A JDBC-based implementation of {@link GameDatabase}
+ * This class connects to a local SQLite database and
+ * creates the required schema if it does not already exist
+ */
 public class GameDatabaseJdbc implements GameDatabase {
     private static final String CONNECTION_STRING = "jdbc:sqlite:scores.db";
 

@@ -4,9 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import se.yrgo.game.BirbGame;
 import se.yrgo.game.constants.Difficulty;
 
@@ -14,24 +17,29 @@ public class StartScreen implements Screen {
 
     private final BirbGame game;
     private SpriteBatch batch;
-    private BitmapFont font;
+    private Texture menuTexture;
+    private FitViewport viewport;
+    private OrthographicCamera camera;
 
     public StartScreen(BirbGame game) {
         this.game = game;
         batch = new SpriteBatch();
-        font = new BitmapFont(Gdx.files.internal("smallFontNew.fnt"));
-        font.setColor(Color.WHITE);
+        menuTexture = new Texture(Gdx.files.internal("startMenuScreen.png"));
+
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(800, 480, camera);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
     }
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
-
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        font.draw(batch, "Choose difficulty:", 100, 300);
-        font.draw(batch, "1 - Easy",           100, 250);
-        font.draw(batch, "2 - Medium",   100, 220);
-        font.draw(batch, "3 - Hard",           100, 190);
+        batch.draw(menuTexture, 0, 0, 800, 480);
         batch.end();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
@@ -50,8 +58,7 @@ public class StartScreen implements Screen {
         dispose();
     }
 
-    @SuppressWarnings("java:S1186")
-    @Override public void resize(int width, int height) {}
+
     @SuppressWarnings("java:S1186")
     @Override public void show() {}
     @SuppressWarnings("java:S1186")
@@ -64,6 +71,6 @@ public class StartScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        font.dispose();
+        menuTexture.dispose();
     }
 }

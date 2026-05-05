@@ -81,12 +81,10 @@ public class GameScreen implements Screen {
         currentScore = 0;
         this.scoreBox = new ScoreBox();
 
-        //Background Music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("birbmusic-cut.ogg"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(1.0f); //1.f = full volume
 
-        // Background
         background = new Sprite(new Texture("background.png"));
         background.setSize(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT);
 
@@ -152,7 +150,7 @@ public class GameScreen implements Screen {
      * Helper method for drawing all textures in a frame.
      */
     public void draw() {
-        ScreenUtils.clear(Color.GRAY);
+        ScreenUtils.clear(Color.BLACK);
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
 

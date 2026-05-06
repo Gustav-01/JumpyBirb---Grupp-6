@@ -2,8 +2,6 @@ package se.yrgo.game;
 
 import com.badlogic.gdx.Game;
 import se.yrgo.game.constants.Difficulty;
-import se.yrgo.game.screens.GameOverScreen;
-import se.yrgo.game.screens.GameScreen;
 import se.yrgo.game.screens.StartScreen;
 import se.yrgo.game.services.HighscoreService;
 

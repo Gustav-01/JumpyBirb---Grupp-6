@@ -123,8 +123,6 @@ public class GameOverScreen implements Screen {
 
         batch.end();
 
-
-        //Wait one second before restarting, in case player just pressed space.
         if (elapsedTime > 1) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 game.setScreen(new GameScreen(game));

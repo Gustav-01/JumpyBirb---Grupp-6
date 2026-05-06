@@ -1,7 +1,5 @@
 package se.yrgo.game.constants;
 
-import com.badlogic.gdx.Gdx;
-
 /**
  * Holds size and movement constants for obstacles.
  * Used to control spacing, speed, and dimensions.

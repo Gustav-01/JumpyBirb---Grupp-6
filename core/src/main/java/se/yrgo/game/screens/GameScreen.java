@@ -10,13 +10,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.audio.Music;
 import se.yrgo.game.BirbGame;
 import se.yrgo.game.sprites.KiwiSprite;
@@ -83,7 +80,7 @@ public class GameScreen implements Screen {
 
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("birbmusic-cut.ogg"));
         backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(1.0f); //1.f = full volume
+        backgroundMusic.setVolume(1.0f);
 
         background = new Sprite(new Texture("background.png"));
         background.setSize(GameFunctionalityConstants.WORLD_WIDTH, GameFunctionalityConstants.WORLD_HEIGHT);
@@ -132,7 +129,6 @@ public class GameScreen implements Screen {
         for (ObstaclePair obs : activeObstacles) {
             obs.update(delta);
 
-            // ----- SCORE LOGIC -----
             if (obs.isAlive() && obs.checkIfPassed(kiwi.getX())) {
                 currentScore++;
             }
@@ -165,9 +161,6 @@ public class GameScreen implements Screen {
         scoreBox.draw(batch, currentScore, game.getPreviousHighscore());
 
         batch.end();
-
-        //For debugging. May be deleted later
-//        drawShapesOutlinesDebug();
     }
 
     /**
@@ -313,7 +306,6 @@ public class GameScreen implements Screen {
         scoreBox.dispose();
         backgroundMusic.dispose();
 
-        // Dispose all active obstacles
         for (ObstaclePair obs : activeObstacles) {
             obs.dispose();
         }
